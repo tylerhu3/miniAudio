@@ -1,4 +1,4 @@
-# Floaty-Music
+# Mini Music
 Summary:
 Simple music app inspired by facebook chatheads. This utilizes a WindowsLayoutManager to make the music head still in focus on top of other apps, a recyclerview to show the music list, and some notification specific things to keep it in focus. Other than that, it's literally a very simple app that just plays music in the background of all other apps.
 
