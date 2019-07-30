@@ -23,6 +23,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -163,6 +164,13 @@ public class FloatingViewService extends Service {
         mfloatViewService = this;
         mContext = this;
 
+
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
         //For detecting headphone disconnects:
         myReceiver = new MusicIntentReceiver();
         IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
@@ -206,7 +214,7 @@ public class FloatingViewService extends Service {
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
+                LAYOUT_FLAG,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, //this was not focusable flag prior
                 PixelFormat.TRANSLUCENT);
 
@@ -541,14 +549,40 @@ public class FloatingViewService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_android_circle)
-                .setContentTitle("Floaty Music")
-                .setContentText("Touch here to show")
-                .setContentIntent(pi).build();
 
-        //The ID needs to be unique, right now it's 1337
-        startForeground(1337, notification);
+        if (Build.VERSION.SDK_INT >= 26) {
+            String CHANNEL_ID = "my_channel_01";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_android_circle)
+                    .setContentTitle("Floaty Music")
+                    .setContentText("Touch here to show")
+                    .setContentIntent(pi).build();
+
+            startForeground(1337, notification);
+        }
+
+        else{
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_android_circle)
+                    .setContentTitle("Floaty Music")
+                    .setContentText("Touch here to show")
+                    .setContentIntent(pi).build();
+
+
+
+
+            //The ID needs to be unique, right now it's 1337
+            startForeground(1337, notification);
+
+
+        }
+
 
     }
 
