@@ -9,7 +9,7 @@ Features:
 -Volume is adjusted independently of device
 
 
-Apk Link: https://www.dropbox.com/s/8qg5p2f0l2gcr01/Floaty_Music.apk?dl=0
+Apk Link: https://www.dropbox.com/s/vr5fbp5vav7bhiq/miniAudio.apk?dl=0
 
 Install Instructions
 1. Download Apk file from the link above and put in phone
