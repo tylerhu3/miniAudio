@@ -9,7 +9,7 @@ Features:
 -Volume is adjusted independently of device
 
 
-Apk Link: https://www.dropbox.com/s/fuffzhyyeuedt12/MiniAudio.apk?dl=0
+Apk Link: https://www.dropbox.com/s/qmx8scuwmkqa4la/MiniAudio.apk?dl=0
 
 Install Instructions
 1. Download Apk file from the link above and put in phone

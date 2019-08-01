@@ -8,20 +8,22 @@
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java" line="351" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c8da34fa-497b-4194-9462-cac2029ae14f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/release/FloatingGuy.apk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-nodpi/album_art2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-nodpi/ic_android_circle3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-nodpi/ic_android_circle5.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-nodpi/ic_android_circle6.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/release/app-release.apk" afterPath="$PROJECT_DIR$/app/release/app-release.apk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java" afterPath="$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/round_corners.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/round_corners.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/round_corners_black.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/round_corners_black.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_floating_widget.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_floating_widget.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -48,15 +50,13 @@
       <file leaf-file-name="FloatingViewService.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4960">
-              <caret line="85" column="29" lean-forward="true" selection-start-line="85" selection-start-column="29" selection-end-line="85" selection-end-column="29" />
+            <state relative-caret-position="585">
+              <caret line="592" column="68" lean-forward="true" selection-start-line="592" selection-start-column="68" selection-end-line="592" selection-end-column="68" />
               <folding>
-                <element signature="class#17531:21029" expanded="false" />
-                <element signature="method#onTouch#0;class#17531:21029" expanded="false" />
+                <element signature="method#themeSetter#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="method#showNotifcations#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="method#startForegroundService#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="method#destroyMusicPlayer#0;class#FloatingViewService#0" expanded="false" />
-                <element signature="method#moveChatHead#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="method#setButtons#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="method#musicPlayerSongChange#0;class#FloatingViewService#0" expanded="false" />
                 <element signature="class#runThread#0;class#FloatingViewService#0" expanded="false" />
@@ -149,6 +149,7 @@
       <find>midScreenWidthSize</find>
       <find>themeSetter</find>
       <find>albumart</find>
+      <find>volume</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -2116,8 +2117,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_floating_widget.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/round_corners.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/round_corners_black.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java" />
       </list>
     </option>
   </component>
@@ -2210,7 +2211,7 @@
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$USER_HOME$/Dropbox/Android/AndroidKey.jks" />
-    <property name="device.picker.selection" value="192.168.166.101:5555" />
+    <property name="device.picker.selection" value="9aa8aa1e" />
     <property name="ExportApk.ApkPath" value="C:\Users\tyler\Desktop\Android\miniAudio\app" />
     <property name="ExportApk.Flavors" value="" />
     <property name="ExportApk.BuildType" value="release" />
@@ -2299,7 +2300,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564648722964" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564652610431" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2347,7 +2348,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564648722964" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564652610431" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2379,6 +2380,27 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
@@ -2509,7 +2531,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564648722967" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1564652610432" />
       </method>
     </configuration>
     <list size="1">
@@ -2597,12 +2619,10 @@
         <state relative-caret-position="1200">
           <caret line="80" column="16" lean-forward="false" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="16" />
           <folding>
-            <element signature="class#17531:21029" expanded="false" />
-            <element signature="method#onTouch#0;class#17531:21029" expanded="false" />
+            <element signature="method#themeSetter#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#showNotifcations#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#startForegroundService#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#destroyMusicPlayer#0;class#FloatingViewService#0" expanded="false" />
-            <element signature="method#moveChatHead#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#setButtons#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#musicPlayerSongChange#0;class#FloatingViewService#0" expanded="false" />
             <element signature="class#runThread#0;class#FloatingViewService#0" expanded="false" />
@@ -2671,12 +2691,10 @@
         <state relative-caret-position="1200">
           <caret line="80" column="16" lean-forward="false" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="16" />
           <folding>
-            <element signature="class#17531:21029" expanded="false" />
-            <element signature="method#onTouch#0;class#17531:21029" expanded="false" />
+            <element signature="method#themeSetter#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#showNotifcations#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#startForegroundService#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#destroyMusicPlayer#0;class#FloatingViewService#0" expanded="false" />
-            <element signature="method#moveChatHead#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#setButtons#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#musicPlayerSongChange#0;class#FloatingViewService#0" expanded="false" />
             <element signature="class#runThread#0;class#FloatingViewService#0" expanded="false" />
@@ -2745,12 +2763,10 @@
         <state relative-caret-position="20800">
           <caret line="576" column="0" lean-forward="false" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
           <folding>
-            <element signature="class#17531:21029" expanded="false" />
-            <element signature="method#onTouch#0;class#17531:21029" expanded="false" />
+            <element signature="method#themeSetter#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#showNotifcations#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#startForegroundService#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#destroyMusicPlayer#0;class#FloatingViewService#0" expanded="false" />
-            <element signature="method#moveChatHead#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#setButtons#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#musicPlayerSongChange#0;class#FloatingViewService#0" expanded="false" />
             <element signature="class#runThread#0;class#FloatingViewService#0" expanded="false" />
@@ -2919,15 +2935,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/info/androidhive/floatingview/FloatingViewService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4960">
-          <caret line="85" column="29" lean-forward="true" selection-start-line="85" selection-start-column="29" selection-end-line="85" selection-end-column="29" />
+        <state relative-caret-position="585">
+          <caret line="592" column="68" lean-forward="true" selection-start-line="592" selection-start-column="68" selection-end-line="592" selection-end-column="68" />
           <folding>
-            <element signature="class#17531:21029" expanded="false" />
-            <element signature="method#onTouch#0;class#17531:21029" expanded="false" />
+            <element signature="method#themeSetter#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#showNotifcations#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#startForegroundService#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#destroyMusicPlayer#0;class#FloatingViewService#0" expanded="false" />
-            <element signature="method#moveChatHead#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#setButtons#0;class#FloatingViewService#0" expanded="false" />
             <element signature="method#musicPlayerSongChange#0;class#FloatingViewService#0" expanded="false" />
             <element signature="class#runThread#0;class#FloatingViewService#0" expanded="false" />

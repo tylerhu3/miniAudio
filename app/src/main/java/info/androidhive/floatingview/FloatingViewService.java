@@ -83,7 +83,7 @@ public class FloatingViewService extends Service {
     public ImageView chatHeadImage;
     //For Animations:
     public int midScreenWidthSize = Resources.getSystem().getDisplayMetrics().widthPixels / 2;
-    public int midScreenHeightSize = Resources.getSystem().getDisplayMetrics().heightPixels / 2;
+//    public int midScreenHeightSize = Resources.getSystem().getDisplayMetrics().heightPixels / 2;
 
     public static ViewGroup mParentView;
     //For Thread work
@@ -152,6 +152,8 @@ public class FloatingViewService extends Service {
         return Service.START_NOT_STICKY;
     }
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -161,8 +163,6 @@ public class FloatingViewService extends Service {
         serviceAlive = true;
         mfloatViewService = this;
         mContext = this;
-
-
         //Fix to Android above 7.0
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -256,6 +256,11 @@ public class FloatingViewService extends Service {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
+                volumeChange = ((float) progress / (float) seekBar.getMax());
+                //Display the newly selected number from picker
+                if (mediaPlayer != null) {
+                    mediaPlayer.setVolume(volumeChange, volumeChange);
+                }
             }
 
             @Override
@@ -264,11 +269,7 @@ public class FloatingViewService extends Service {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                volumeChange = ((float) progress / (float) seekBar.getMax());
-                //Display the newly selected number from picker
-                if (mediaPlayer != null) {
-                    mediaPlayer.setVolume(volumeChange, volumeChange);
-                }
+
             }
         });
 
@@ -292,7 +293,6 @@ public class FloatingViewService extends Service {
                 }
             }
         });
-
 
         //Create the List:
         songAdapter = new SongAdapter(this, _songs);
@@ -319,6 +319,7 @@ public class FloatingViewService extends Service {
         albumart = mFloatingView.findViewById(R.id.albumart);
 
         //This sets up a double click action for the albumArt
+        //As of current it minimizes music player to chat head
         albumart.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -326,30 +327,34 @@ public class FloatingViewService extends Service {
 
                 long thisTime = event.getEventTime();
 
-                // TODO: Get double click on albumart to minimize player
+
+
+                // The below if statement simulates a double tap
+                // On first touch, we record the time and then we
+                // follow
                 if (event.getAction() == MotionEvent.ACTION_DOWN &&
                         (thisTime - lastTouchTime < 250)) {
                     Log.d("XXX", "DoubleTap Action");
                     lastTouchTime = -1;
                     collapsedView.setVisibility(VISIBLE);
                     expandedView.setVisibility(View.GONE);
-                    if (params.x < midScreenWidthSize) {
-                        moveChatHead(Math.round(params.x), 0);
-                    } else {
-
-                        int orientation = getResources().getConfiguration().orientation;
-                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            // In landscape
-                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().heightPixels);
-                            Log.d("XXX", "landscape " + Resources.getSystem().getDisplayMetrics().heightPixels);
-                        } else {
-                            // In portrait
-                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
-
-                            Log.d("XXX", "wid " + Resources.getSystem().getDisplayMetrics().heightPixels);
-
-                        }
-                    }
+//                    if (params.x < midScreenWidthSize) {
+//                        moveChatHead(Math.round(params.x), 0);
+//                    } else {
+//
+//                        int orientation = getResources().getConfiguration().orientation;
+//                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                            // In landscape
+//                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().heightPixels);
+//                            Log.d("XXX", "landscape " + Resources.getSystem().getDisplayMetrics().heightPixels);
+//                        } else {
+//                            // In portrait
+//                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
+//
+//                            Log.d("XXX", "wid " + Resources.getSystem().getDisplayMetrics().heightPixels);
+//
+//                        }
+//                    }
                     return true;
                 } else {
                     lastTouchTime = thisTime;
@@ -436,11 +441,13 @@ public class FloatingViewService extends Service {
                         //This below will prevent automatically moving the View back to a corner
                         if (expandedView.getVisibility() != View.GONE)
                             return true;
-                        if (event.getRawX() < midScreenWidthSize) {
-                            moveChatHead(Math.round(event.getRawX()), 0);
-                        } else {
-                            moveChatHead(Math.round(event.getRawX()), 1080);
-                        }
+
+                        //The code below moves the chathead back to the side of the screen
+//                        if (event.getRawX() < midScreenWidthSize) {
+//                            moveChatHead(Math.round(event.getRawX()), 0);
+//                        } else {
+//                            moveChatHead(Math.round(event.getRawX()), 1080);
+//                        }
                         //////////////////////////////// For Animation
                         if (Xdiff < 10 && Ydiff < 10) {
                             if (isViewCollapsed()) {
@@ -459,13 +466,13 @@ public class FloatingViewService extends Service {
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
                         Log.d("Floating View Service", "x: " + params.x + " y: " + params.x);
 
-                        //This if statement below is to fix a strange draw delay
-                        if (initialX > midScreenWidthSize && expandedView.getVisibility() == View.GONE) {
-                            params.x -= 120;
-                        }
-                        if (initialX > midScreenWidthSize && expandedView.getVisibility() != View.GONE) {
-                            params.x -= 600;
-                        }
+//                        //This if statement below is to fix a strange draw delay
+//                        if (initialX > midScreenWidthSize && expandedView.getVisibility() == View.GONE) {
+//                            params.x -= 120;
+//                        }
+//                        if (initialX > midScreenWidthSize && expandedView.getVisibility() != View.GONE) {
+//                            params.x -= 600;
+//                        }
                         //Update the layout with new X & Y coordinate
                         mWindowManager.updateViewLayout(mParentView, params);
                         return true;
