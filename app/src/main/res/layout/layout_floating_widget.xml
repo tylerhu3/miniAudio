@@ -97,7 +97,7 @@
                         android:id="@+id/albumart"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/album_art2"
+                        android:src="@drawable/music_player"
                         tools:ignore="ContentDescription" />
 
                     <!--Previous button-->

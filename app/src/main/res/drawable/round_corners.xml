@@ -12,7 +12,7 @@
         android:endColor="#44adf6"
         android:startColor="#f4596e"
         android:angle="270" />
-        <bitmap android:src="@drawable/album_art2"/>
+
 
     </stroke>
     <corners
