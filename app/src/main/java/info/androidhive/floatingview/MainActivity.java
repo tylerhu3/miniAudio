@@ -26,32 +26,16 @@ public class MainActivity extends AppCompatActivity {
     public static int iconChoice = 0;
     private Button destroyWidgetButton;
     public static int blackOn = 0;
-//    static MainActivity mMainActivity;
-//
-//
-//    public static MainActivity getInstance(){
-//        return  mMainActivity;
-//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        mMainActivity = this;
-        //Check if the application has draw over other apps permission or not?
-        //This permission is by default available for API<23. But for API > 23
-        //you have to ask for the permission in runtime.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
 
-            //If the draw over permission is not available open the settings screen
-            //to grant the permission.
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-        } else {
-            initializeView();
-        }
+
+        checkUserPermission();
 
         final Switch imySwitch = findViewById(R.id.switch1);
         if(blackOn == 1){
@@ -70,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        checkUserPermission();
     }
 
     /**
@@ -125,6 +108,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void checkUserPermission() {
+
+        //Check if the application has draw over other apps permission or not?
+        //This permission is by default available for API<23. But for API > 23
+        //you have to ask for the permission in runtime.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        } else {
+            initializeView();
+        }
+
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 123:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this,"Permission was gr",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Permission was granted",Toast.LENGTH_SHORT);
                 } else {
                     Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
                     checkUserPermission();

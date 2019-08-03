@@ -1,5 +1,6 @@
 package info.androidhive.floatingview;
-
+/*The base code is borrowed from android hive, the mediaplayer and everything else is just me
+* building upon the original code*/
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -83,7 +84,6 @@ public class FloatingViewService extends Service {
     public ImageView chatHeadImage;
     //For Animations:
     public int midScreenWidthSize = Resources.getSystem().getDisplayMetrics().widthPixels / 2;
-//    public int midScreenHeightSize = Resources.getSystem().getDisplayMetrics().heightPixels / 2;
 
     public static ViewGroup mParentView;
     //For Thread work
@@ -94,6 +94,7 @@ public class FloatingViewService extends Service {
     int seekBarColor = Color.RED; // Variable to decide seekBar colors
     public static int themeNumber = 0;
     int savedPlayDrawableID, savedPausedDrawableID;
+    Notification notification;
 
     public static FloatingViewService getInstance() {
         return mfloatViewService;
@@ -148,10 +149,8 @@ public class FloatingViewService extends Service {
     with the clients (and vice-versa).*/
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //TODO do something useful
         return Service.START_NOT_STICKY;
     }
-
 
 
     @Override
@@ -328,7 +327,6 @@ public class FloatingViewService extends Service {
                 long thisTime = event.getEventTime();
 
 
-
                 // The below if statement simulates a double tap
                 // On first touch, we record the time and then we
                 // follow
@@ -379,11 +377,13 @@ public class FloatingViewService extends Service {
             public void onClick(View view) {
                 collapsedView.setVisibility(VISIBLE);
                 expandedView.setVisibility(View.GONE);
-                if (params.x < midScreenWidthSize) {
-                    moveChatHead(Math.round(params.x), 0);
-                } else {
-                    moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
-                }
+//                if (params.x < midScreenWidthSize) {
+//                    //animations missing here
+//                    moveChatHead(Math.round(params.x), 0);
+//                } else {
+                     //animations missing here
+//                    moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
+//                }
             }
         });
 
@@ -495,36 +495,6 @@ public class FloatingViewService extends Service {
 //        regBroadcast();
     }
 
-
-    public void showNotifcations() {
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("default",
-                    "YOUR_CHANNEL_NAME",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
-            mNotificationManager.createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.drawable.ic_android_circle) // choose notification icon
-                .setContentTitle("MiniMusic") // title for notification
-                .setContentText("Expand")// message for notification
-//                    .setSound(alarmSound) // set alarm sound for notification
-                .setAutoCancel(true); // clear notification after click
-        Intent intent = new Intent(getApplicationContext(), SetVisibility.class);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setOngoing(true);
-        //Specifically for swiping action:
-//        Intent deleteMp3 = new Intent(getApplicationContext(), Shutdown.class);
-//        PendingIntent deleteINGmp3 = PendingIntent.getBroadcast(this.getApplicationContext(), 0, deleteMp3, 0);
-
-        mBuilder.setContentIntent(pi);
-//        mBuilder.setDeleteIntent(deleteINGmp3);
-
-        mNotificationManager.notify(0, mBuilder.build());
-    }
-
     /*starForeground Service - creates a notification intent */
     public void startForegroundService() {
 
@@ -535,33 +505,30 @@ public class FloatingViewService extends Service {
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "my_channel_01";
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "Channel human readable title",
+                    "MiniAudio",
                     NotificationManager.IMPORTANCE_DEFAULT);
 
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+            notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.noticon2)
-                    .setContentTitle("Floaty Music")
-                    .setContentText("Touch here to show")
+                    .setContentTitle("MiniAudio")
+                    .setContentText("Touch here to Expand")
+                    .addAction(R.drawable.ic_zoom_out_map_black_24dp, "On",pi)
+                    .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                    .setShowActionsInCompactView(0))
                     .setContentIntent(pi).build();
-
             startForeground(1337, notification);
         } else {
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_android_circle)
-                    .setContentTitle("Floaty Music")
-                    .setContentText("Touch here to show")
+            notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.noticon2)
+                    .setContentTitle("MiniAudio")
+                    .setContentText("Touch here to expand")
+                    .addAction(R.drawable.ic_zoom_out_map_black_24dp, "On",pi)
                     .setContentIntent(pi).build();
-
-
             //The ID needs to be unique, right now it's 1337
             startForeground(1337, notification);
-
-
         }
-
-
     }
 
 
@@ -795,7 +762,7 @@ public class FloatingViewService extends Service {
 
     /**
      * Detect if the floating view is collapsed or expanded.
-       returns true if the floating view is collapsed.
+     * returns true if the floating view is collapsed.
      */
     private boolean isViewCollapsed() {
         return mParentView == null || mFloatingView.findViewById(R.id.collapse_view).getVisibility() == VISIBLE;
