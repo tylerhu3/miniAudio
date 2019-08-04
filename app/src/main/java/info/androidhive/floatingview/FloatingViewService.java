@@ -118,7 +118,7 @@ public class FloatingViewService extends Service {
             seekBarText.setTextColor(Color.WHITE);
             expandedView.setBackgroundResource(R.drawable.round_corners_black);
         } else { //White Theme
-            chatHeadImage.setImageResource(R.drawable.ic_android_circle);
+            chatHeadImage.setImageResource(R.drawable.ic_android_circle3);
             albumart.setImageResource(R.drawable.music_player);
             playButton.setImageResource(R.drawable.play);
             nextButton.setImageResource(R.drawable.next);
@@ -366,6 +366,7 @@ public class FloatingViewService extends Service {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(mContext, "Player Shutdown", Toast.LENGTH_SHORT).show();
                 destroyMusicPlayer();
             }
         });
