@@ -46,7 +46,9 @@ import static android.view.View.VISIBLE;
 /*
 *
 * 10/3/2019, Trying to get color ripple effect on mediaButton pressed
-* Couldn't attempt it because no internet, check one line 543 tomorrow*/
+* Couldn't attempt it because no internet, check one line 543 tomorrow
+*
+* 10/8/2019, Still no ripple color so we giving up on that*/
 public class FloatingViewService extends Service {
     // variable to check whether this service is active
     public static Boolean serviceAlive = false;
@@ -129,7 +131,6 @@ public class FloatingViewService extends Service {
                     musicPlayerSongChange(currentSong);
                     return;
                 }
-
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                     playButton.setImageResource(savedPlayDrawableID);
