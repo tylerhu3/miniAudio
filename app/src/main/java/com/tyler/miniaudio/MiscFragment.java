@@ -23,7 +23,7 @@ import static com.tyler.miniaudio.MainBottomNavActivity.blackOn;
  */
 public class MiscFragment extends Fragment {
 
-    private Button destroyWidgetButton;
+
 
     public MiscFragment() {
         // Required empty public constructor
@@ -41,37 +41,6 @@ public class MiscFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        destroyWidgetButton = view.findViewById(R.id.buttonDestroyWidget);
-        destroyWidgetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(FloatingViewService.serviceAlive == true){
-                    FloatingViewService.getInstance().destroyMusicPlayer();
-                    Toast.makeText(getActivity(), "Music closed", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getActivity(), "Music player not active", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        final Switch imySwitch = view.findViewById(R.id.themeSwitch);
-        if(blackOn == 1){
-            imySwitch.setChecked(true);
-        }
-        imySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                if(imySwitch.isChecked()){
-                    blackOn = 1;
-                }
-                else
-                {
-                    blackOn = 0;
-                }
-            }
-        });
     }
 
 }

@@ -5,57 +5,97 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/launchButton"
-            android:background="@drawable/round_button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:textColor="@color/colorWhite"
-            android:layout_centerInParent="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Launch" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bubble head Choice:"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
 
 
 
-        <!--<ImageView-->
-        <!--android:id="@+id/img_choice1"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:src="@drawable/ic_android_circle"/>-->
+            <ImageView
+                android:id="@+id/img_choice1"
+                android:layout_width="66dp"
+                android:layout_height="68dp"
+                android:src="@drawable/ic_android_circle"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="42dp" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/img_choice2"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignTop="@+id/img_choice1"-->
-        <!--android:layout_marginStart="103dp"-->
-        <!--android:src="@drawable/ic_android_circle2" />-->
+            <ImageView
+                android:id="@+id/img_choice2"
+                android:layout_width="66dp"
+                android:layout_height="68dp"
+                android:layout_alignTop="@+id/img_choice1"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_android_circle2"
+                tools:layout_editor_absoluteX="110dp"
+                tools:layout_editor_absoluteY="42dp" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/img_choice3"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignTop="@+id/img_choice1"-->
-        <!--android:layout_marginEnd="75dp"-->
-        <!--android:src="@drawable/ic_android_circle3" />-->
+            <ImageView
+                android:id="@+id/img_choice3"
+                android:layout_width="66dp"
+                android:layout_height="68dp"
+                android:layout_alignTop="@+id/img_choice1"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_android_circle3"
+                tools:layout_editor_absoluteX="201dp"
+                tools:layout_editor_absoluteY="42dp" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/img_choice4"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignTop="@+id/img_choice1"-->
-        <!--android:src="@drawable/ic_android_circle4" />-->
+            <ImageView
+                android:id="@+id/img_choice4"
+                android:layout_width="66dp"
+                android:layout_height="68dp"
+                android:layout_alignTop="@+id/img_choice1"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_android_circle4"
+                tools:layout_editor_absoluteX="292dp"
+                tools:layout_editor_absoluteY="42dp" />
+
+            <Button
+                android:id="@+id/launchButton"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/round_button"
+                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Launch"
+                android:textColor="@color/colorWhite"
+                tools:ignore="ContentDescription, newAPI"
+                tools:layout_editor_absoluteX="117dp"
+                tools:layout_editor_absoluteY="226dp">
 
 
-    </RelativeLayout>
+            </Button>
+
+            <Button
+                android:id="@+id/buttonDestroyWidget"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close Music Player"
+                tools:layout_editor_absoluteX="227dp"
+                tools:layout_editor_absoluteY="524dp" />
+
+            <Switch
+                android:id="@+id/themeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark Theme"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="537dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </FrameLayout>
