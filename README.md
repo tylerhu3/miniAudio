@@ -13,5 +13,6 @@ Allow "Install unkown App"
 Find the apk with any file explorer
 Open the apk file and it shall install.
 
-https://user-images.githubusercontent.com/30193978/52017941-b106f780-249d-11e9-9998-b5dc15ec0f67.jpg
+<img src="https://user-images.githubusercontent.com/30193978/52017941-b106f780-249d-11e9-9998-b5dc15ec0f67.jpg">
+<img src="https://user-images.githubusercontent.com/30193978/52017942-b106f780-249d-11e9-8de5-fadc1192f65b.jpg">
 
