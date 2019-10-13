@@ -1,99 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bubble head Choice:"
-                android:textSize="18dp"
-                android:textColor="@color/colorBlack"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-
-
-            <ImageView
-                android:id="@+id/img_choice1"
-                android:layout_width="66dp"
-                android:layout_height="68dp"
-                android:src="@drawable/ic_android_circle"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="42dp" />
-
-            <ImageView
-                android:id="@+id/img_choice2"
-                android:layout_width="66dp"
-                android:layout_height="68dp"
-                android:layout_alignTop="@+id/img_choice1"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_android_circle2"
-                tools:layout_editor_absoluteX="110dp"
-                tools:layout_editor_absoluteY="42dp" />
-
-            <ImageView
-                android:id="@+id/img_choice3"
-                android:layout_width="66dp"
-                android:layout_height="68dp"
-                android:layout_alignTop="@+id/img_choice1"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_android_circle3"
-                tools:layout_editor_absoluteX="201dp"
-                tools:layout_editor_absoluteY="42dp" />
-
-            <ImageView
-                android:id="@+id/img_choice4"
-                android:layout_width="66dp"
-                android:layout_height="68dp"
-                android:layout_alignTop="@+id/img_choice1"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_android_circle4"
-                tools:layout_editor_absoluteX="292dp"
-                tools:layout_editor_absoluteY="42dp" />
-
-            <Button
-                android:id="@+id/launchButton"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/round_button"
-                android:clickable="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Launch"
-                android:textColor="@color/colorWhite"
-                tools:ignore="ContentDescription, newAPI"
-                tools:layout_editor_absoluteX="117dp"
-                tools:layout_editor_absoluteY="226dp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="Bubble head Choice:"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/head1"
+            app:layout_constraintStart_toStartOf="@+id/head1" />
 
 
-            </Button>
+        <ImageView
+            android:id="@+id/head1"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginRight="28dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_android_circle"
+            app:layout_constraintBottom_toBottomOf="@+id/head2"
+            app:layout_constraintEnd_toStartOf="@+id/head2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/head2" />
 
-            <Button
-                android:id="@+id/buttonDestroyWidget"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Close Music Player"
-                tools:layout_editor_absoluteX="227dp"
-                tools:layout_editor_absoluteY="524dp" />
+        <ImageView
+            android:id="@+id/head2"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/ic_android_circle2"
+            app:layout_constraintBottom_toBottomOf="@+id/head3"
+            app:layout_constraintEnd_toStartOf="@+id/head3"
+            app:layout_constraintStart_toEndOf="@+id/head1"
+            app:layout_constraintTop_toTopOf="@+id/head3"
+            android:layout_alignParentLeft="true" />
 
-            <Switch
-                android:id="@+id/themeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dark Theme"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="537dp" />
+        <ImageView
+            android:id="@+id/head3"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/ic_android_circle3"
+            app:layout_constraintBottom_toBottomOf="@+id/head4"
+            app:layout_constraintEnd_toStartOf="@+id/head4"
+            app:layout_constraintStart_toEndOf="@+id/head2"
+            app:layout_constraintTop_toTopOf="@+id/head4"
+            android:layout_alignParentRight="true" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/head4"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="53dp"
+            android:layout_marginRight="53dp"
+            android:src="@drawable/ic_android_circle4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/head3"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentRight="true" />
+
+        <Button
+            android:id="@+id/launchButton"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="117dp"
+            android:layout_marginLeft="117dp"
+            android:background="@drawable/round_button"
+            android:clickable="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Launch"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription, newAPI">
+
+
+        </Button>
+
+        <Button
+            android:id="@+id/buttonDestroyWidget"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="31dp"
+            android:text="Close Music Player"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Switch
+            android:id="@+id/themeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="39dp"
+            android:text="Dark Theme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

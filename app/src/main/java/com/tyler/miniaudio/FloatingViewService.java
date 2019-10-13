@@ -94,7 +94,7 @@ public class FloatingViewService extends Service {
     //multiple themes for the media player and since the playButton is the only button that changes
     //from play to pause, Im using the variables
     int savedPlayDrawableID, savedPausedDrawableID;
-    public static int themeNumber = 0;
+    public static int themeNumber = 0, headChoice = 0;
     int seekBarColor = Color.RED;
 
 
@@ -524,10 +524,23 @@ public class FloatingViewService extends Service {
         TextView volumeBarText, seekBarText;
         chatHeadImage = mFloatingView.findViewById(R.id.collapsed_iv);
         themeNumber = MainBottomNavActivity.blackOn;
+
+        switch(headChoice){
+            case 1 : chatHeadImage.setImageResource(R.drawable.ic_android_circle); break;
+
+            case 2 : chatHeadImage.setImageResource(R.drawable.ic_android_circle2); break;
+
+            case 3 : chatHeadImage.setImageResource(R.drawable.ic_android_circle3); break;
+
+            case 4 : chatHeadImage.setImageResource(R.drawable.ic_android_circle4); break;
+                    default:
+                        chatHeadImage.setImageResource(R.drawable.ic_android_circle);
+                }
+
         if (themeNumber == 1) { //Dark Theme
 
 
-            chatHeadImage.setImageResource(R.drawable.ic_android_circle2);
+//            chatHeadImage.setImageResource(R.drawable.ic_android_circle2);
             albumart.setImageResource(R.drawable.album_art_2);
             playButton.setImageResource(R.drawable.play2);
             nextButton.setImageResource(R.drawable.next2);
@@ -540,7 +553,7 @@ public class FloatingViewService extends Service {
             seekBarText.setTextColor(Color.WHITE);
             expandedView.setBackgroundResource(R.drawable.round_corners_black);
         } else { //White Theme
-            chatHeadImage.setImageResource(R.drawable.ic_android_circle);
+//            chatHeadImage.setImageResource(R.drawable.ic_android_circle);
             albumart.setImageResource(R.drawable.album_art_1);
             playButton.setImageResource(R.drawable.play);
             nextButton.setImageResource(R.drawable.next);

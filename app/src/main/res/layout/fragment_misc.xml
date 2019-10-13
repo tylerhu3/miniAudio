@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MiscFragment">
 <TextView
+    android:textColor="@color/colorBlack"
+    android:layout_margin="15sp"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:text="Under Construction"
-    android:textSize="19dp"
+    android:text="MiniAudio Beta: \n This is mainly meant to be used as a background music player to keep music playing in the background while other apps are running in the background."
+    android:textSize="25dp"
     />
 
 </FrameLayout>

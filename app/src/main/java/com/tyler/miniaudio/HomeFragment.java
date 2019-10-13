@@ -25,7 +25,7 @@ import static com.tyler.miniaudio.MainBottomNavActivity.blackOn;
 public class HomeFragment extends Fragment {
 
     private Button destroyWidgetButton;
-
+    public int headChoice = 0;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -45,6 +45,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        new BubbleHead(view);
         view.findViewById(R.id.launchButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +68,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 if(FloatingViewService.serviceAlive == true){
                     FloatingViewService.getInstance().destroyMusicPlayer();
-                    Toast.makeText(getActivity(), "Music closed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Shut download", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(getActivity(), "Music player not active", Toast.LENGTH_SHORT).show();
