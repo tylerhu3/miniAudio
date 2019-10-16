@@ -43,49 +43,49 @@
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
             android:src="@drawable/ic_android_circle2"
             app:layout_constraintBottom_toBottomOf="@+id/head3"
             app:layout_constraintEnd_toStartOf="@+id/head3"
             app:layout_constraintStart_toEndOf="@+id/head1"
-            app:layout_constraintTop_toTopOf="@+id/head3"
-            android:layout_alignParentLeft="true" />
+            app:layout_constraintTop_toTopOf="@+id/head3" />
 
         <ImageView
             android:id="@+id/head3"
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
             android:src="@drawable/ic_android_circle3"
             app:layout_constraintBottom_toBottomOf="@+id/head4"
             app:layout_constraintEnd_toStartOf="@+id/head4"
             app:layout_constraintStart_toEndOf="@+id/head2"
-            app:layout_constraintTop_toTopOf="@+id/head4"
-            android:layout_alignParentRight="true" />
+            app:layout_constraintTop_toTopOf="@+id/head4" />
 
         <ImageView
             android:id="@+id/head4"
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="42dp"
             android:layout_marginEnd="53dp"
             android:layout_marginRight="53dp"
             android:src="@drawable/ic_android_circle4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/head3"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_alignParentRight="true" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/launchButton"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginStart="117dp"
-            android:layout_marginLeft="117dp"
+            android:layout_marginStart="128dp"
+            android:layout_marginLeft="128dp"
             android:background="@drawable/round_button"
             android:clickable="true"
             android:paddingLeft="10dp"
@@ -95,6 +95,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498"
             tools:ignore="ContentDescription, newAPI">
 
 

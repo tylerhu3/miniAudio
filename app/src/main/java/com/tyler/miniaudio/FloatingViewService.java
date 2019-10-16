@@ -6,20 +6,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -38,9 +31,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 import static android.view.View.VISIBLE;
 /*
@@ -62,30 +52,14 @@ public class FloatingViewService extends Service {
     public  ViewGroup mParentView;
     static FloatingViewService mfloatViewService;
     Notification notification;
-
+    public SongAdapter songAdapter;
     //Context of this service:
     public  Context mContext;
-
-    //MediaPlayer SetUp:
-    public ArrayList<SongInfo> _songs;
     public RecyclerView recyclerView;
-    public  SongAdapter songAdapter;
-    public  MediaPlayer mediaPlayer;
-    public Random randomNumberGenerator = new Random();// For shuffling songs
-    public Handler myHandler = new Handler();
-    public int shuffleOn = 0; //variable to choose whether to shuffle Music or not
-    private int currentSong = 0;
-    private float volumeChange = 1;
-    private MusicIntentReceiver myReceiver;
-    //For Thread work
-    //volatile means that our threads always access the
-    //most up to date version of the variable
-    public volatile Thread seekBarProgression;
-    public volatile Boolean isMusicPlaying = true;
-
-
+//    MusicPlayer mPlayer;
     //Mediaplayer image configuration
     public SeekBar seekBar, volumeBar;
+
     public ImageView playButton, nextButton,  prevButton, albumart, minimizeButton, maximizeButton, closeButton,
             shuffleButton;
     public long lastTouchTime = 0; //used to measure double tap for albumartView
@@ -106,20 +80,18 @@ public class FloatingViewService extends Service {
         mfloatViewService = this;
         mContext = this;
         setupView();
-        setUpMediaPlayer();
+//        mPlayer = MusicPlayer.getInstance();
+//        Log.d("XXX", "" + mPlayer);
+        // mPlayer needs to be before setUpMediaPlayerViews because we use mPlayer there.
+        setUpMediaPlayerViews();
+        themeSetter();
+        setUpRecycler();
+        setButtonsMusicButtons();
         startForegroundService();
 
     }
 
-    public void setUpMediaPlayer(){
-        headPhoneDetection();
-        loadSongs();
-        setUpMediaPlayerViews();
-        setButtonsMusicButtons();
-        setUpRecycler();
-        themeSetter();
-        moveSeekBarWhilePlayingMusic();
-    }
+
 
     /////////////Set up Music Buttons ///////////////
     public void setButtonsMusicButtons() {
@@ -127,17 +99,7 @@ public class FloatingViewService extends Service {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaPlayer == null) {
-                    musicPlayerSongChange(currentSong);
-                    return;
-                }
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                    playButton.setImageResource(savedPlayDrawableID);
-                } else {
-                    mediaPlayer.start();
-                    playButton.setImageResource(savedPausedDrawableID);
-                }
+                MusicPlayer.playPause();
             }
         });
 
@@ -145,18 +107,7 @@ public class FloatingViewService extends Service {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaPlayer == null)
-                    return;
-                ++currentSong;
-                //insert shuffle code here:
-                if (shuffleOn == 1) {
-                    currentSong = randomNumberGenerator.nextInt(_songs.size());
-                }
-
-
-
-                musicPlayerSongChange(currentSong);
-
+                MusicPlayer.nextSong();
             }
         });
 
@@ -164,110 +115,13 @@ public class FloatingViewService extends Service {
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaPlayer == null)
-                    return;
-                musicPlayerSongChange(--currentSong);
+                MusicPlayer.prevSong();
             }
         });
 
     }
 
 
-    //////////// Function for changing songs
-    public void musicPlayerSongChange(int position) {
-
-        currentSong = position;
-        if (currentSong >= _songs.size()) {
-            currentSong = 0;
-            return;
-        }
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (mediaPlayer != null) {
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-
-                    mediaPlayer = new MediaPlayer();
-
-//                    Log.d("XXX", "\n_songsName: " + _songs.get(currentSong).getSongname() +
-//                            "Artist Name: " + _songs.get(currentSong).getArtistname());
-                    mediaPlayer.setVolume(volumeChange, volumeChange);
-                    mediaPlayer.setDataSource(_songs.get(currentSong).getSongUrl());
-                    mediaPlayer.prepareAsync();
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-
-                            seekBar.setProgress(0);
-                            seekBar.setMax(mediaPlayer.getDuration());
-                            mp.start();
-//                            Log.d("Prog", "run: " + mediaPlayer.getDuration());
-                        }
-                    });
-                    playButton.setImageResource(savedPausedDrawableID);
-
-                    //When the current mediafile is finish playing do this:
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            playButton.setImageResource(savedPlayDrawableID);
-                            if (currentSong + 1 != _songs.size()) { //We are not final track
-//                                Log.d("XXX", "Next Song");
-
-                                if(shuffleOn == 0) {
-                                    ++currentSong;
-                                }
-                                else if (shuffleOn == 1) {
-                                    currentSong = randomNumberGenerator.nextInt(_songs.size());
-                                }
-                                musicPlayerSongChange(currentSong);
-                            } else { //We are on final track
-                                if (shuffleOn == 1) {
-                                    currentSong = randomNumberGenerator.nextInt(_songs.size());
-                                }
-                                else{
-                                    currentSong = 0;
-                                }
-                            }
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-//                    Log.d("XXX", e.getMessage());
-                    //This statement below
-                    Toast.makeText(FloatingViewService.this, "Error Playing Song", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        /*We have a Toast message inside the runnable so we need a handler to take send information
-        back into the runnable to be able to make that Toast Message work
-         Also: Anything that runs on the main thread needs a handler, the handler will execute
-         on the thread it was created, main in our case*/
-//        new Thread(runnable).start();
-        myHandler.postDelayed(runnable, 1000);
-    }
-
-
-    public void moveSeekBarWhilePlayingMusic(){
-        seekBarProgression = new SeekBarTracker();
-        seekBarProgression.start();
-    }
-
-    public void headPhoneDetection(){
-        //For detecting headphone disconnects we will new a MusicIntentReciever
-        // check " private class MusicIntentReceiver extends BroadcastReceiver" below:
-        myReceiver = new MusicIntentReceiver();
-        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        registerReceiver(myReceiver, filter);
-    }
 
     public void setUpRecycler(){
         recyclerView = mFloatingView.findViewById(R.id.recyclerView);
@@ -277,18 +131,7 @@ public class FloatingViewService extends Service {
                 linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        songAdapter = new SongAdapter(this, _songs);
-
-        songAdapter.setOnItemClickListener(new SongAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Context context,/*final Button b,*/ View view, final SongInfo obj, final int position) {
-                musicPlayerSongChange(position);
-//                view.setBackgroundColor(Color.MAGENTA);
-//                String songName = obj.getArtistname() + " - " + obj.getSongname();
-//                songText.setText(songName);
-            }
-        });
-        recyclerView.setAdapter(songAdapter);
+        recyclerView.setAdapter(MainBottomNavActivity.songAdapter);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -307,18 +150,16 @@ public class FloatingViewService extends Service {
         volumeBar.getProgressDrawable().setColorFilter(seekBarColor, PorterDuff.Mode.SRC_IN);
         if (Build.VERSION.SDK_INT >= 16)
         volumeBar.getThumb().setColorFilter(seekBarColor, PorterDuff.Mode.SRC_IN);
-
         volumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                volumeChange = ((float) progress / (float) seekBar.getMax());
+                float newVolume = ((float) progress / (float) seekBar.getMax());
                 //Display the newly selected number from picker
-                if (mediaPlayer != null) {
-                    mediaPlayer.setVolume(volumeChange, volumeChange);
-                }
+                MusicPlayer.setVolume(newVolume);
+
             }
 
             @Override
@@ -346,9 +187,8 @@ public class FloatingViewService extends Service {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Display the newly selected number from picker
-                if (mediaPlayer != null) {
-                    mediaPlayer.seekTo(progress);
-                }
+                    MusicPlayer.setMediaPlayerProgress(progress);
+
             }
         });
         //Attach variables to media buttons
@@ -440,71 +280,23 @@ public class FloatingViewService extends Service {
         shuffleButton = mParentView.findViewById(R.id.buttonShuffle);
         //TODO: The shuffle button comes on as empty blank by default
         //so this statement below just fills it in with a loop icon
-        shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
+
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 /*This is honestly better off as a circular linkedList but I wont both with
                 * the trouble, just a possible future revision*/
-                if (shuffleOn == 0) {
-                    shuffleButton.setImageResource(R.drawable.ic_repeat_one_black_24dp);
-                    Toast.makeText(mContext, "Repeat Mode", Toast.LENGTH_SHORT).show();
-                    shuffleOn = 2;
-                } else if (shuffleOn == 2){
-                    shuffleButton.setImageResource(R.drawable.ic_shuffle_black_24dp);
-                    Toast.makeText(mContext, "Shuffle Mode", Toast.LENGTH_SHORT).show();
-                    shuffleOn = 1;
-                }
-                else{
-                    shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
-                    Toast.makeText(mContext, "Normal Mode", Toast.LENGTH_SHORT).show();
-                    shuffleOn = 0;
-                }
+                MusicPlayer.shuffleSongs();
 
             }
         });
 
     }
 
-    //This allows external classes to access this class
+    //We make this class a singleton with the below
+
     public static FloatingViewService getInstance() {
         return mfloatViewService;
-    }
-
-    ////////// Load ALL audio from Storage
-    private void loadSongs() {
-
-        _songs = new ArrayList<>();
-        Toast.makeText(this, "Loading Songs...", Toast.LENGTH_SHORT).show();
-
-        //grab music files from "sdcard":
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        // Grab music from internal storage:
-        Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-
-        String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0";
-        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                    SongInfo s = new SongInfo(name, artist, url);
-
-                    try {
-                        _songs.add(s);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(mContext, "add song error", Toast.LENGTH_SHORT).show();
-
-                    }
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            songAdapter = new SongAdapter(FloatingViewService.this, _songs);
-        }
     }
 
 
@@ -516,6 +308,8 @@ public class FloatingViewService extends Service {
 
 
 /*public void themeSetter() - associated all the imageView variables
+* this has nothing to do with the MusicPlayer class. The ImageViews associated with that are set up
+* in setUpMediaPlayerViews() method
 * with the correct layout id in layout_floating_widget.xml*/
     public void themeSetter() {
 
@@ -537,10 +331,10 @@ public class FloatingViewService extends Service {
                         chatHeadImage.setImageResource(R.drawable.ic_android_circle);
                 }
 
+
         if (themeNumber == 1) { //Dark Theme
+            shuffleButton.setImageResource(R.drawable.ic_repeat_white_24dp);
 
-
-//            chatHeadImage.setImageResource(R.drawable.ic_android_circle2);
             albumart.setImageResource(R.drawable.album_art_2);
             playButton.setImageResource(R.drawable.play2);
             nextButton.setImageResource(R.drawable.next2);
@@ -553,7 +347,8 @@ public class FloatingViewService extends Service {
             seekBarText.setTextColor(Color.WHITE);
             expandedView.setBackgroundResource(R.drawable.round_corners_black);
         } else { //White Theme
-//            chatHeadImage.setImageResource(R.drawable.ic_android_circle);
+            shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
+
             albumart.setImageResource(R.drawable.album_art_1);
             playButton.setImageResource(R.drawable.play);
             nextButton.setImageResource(R.drawable.next);
@@ -575,7 +370,6 @@ public class FloatingViewService extends Service {
 
         Intent intent = new Intent(getApplicationContext(), SetVisibility.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
 
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "my_channel_01";
@@ -614,42 +408,6 @@ public class FloatingViewService extends Service {
 
 
 
-    ///This is for headphone disconnect
-    private class MusicIntentReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
-                int state = intent.getIntExtra("state", -1);
-                switch (state) {
-                    case 0:
-//                        Log.d(TAG, "Headset is unplugged");
-                        if (mediaPlayer == null)
-                            break;
-                        if (mediaPlayer.isPlaying()) {
-                            mediaPlayer.pause();
-                            playButton.setImageResource(savedPlayDrawableID);
-                        }
-
-                        break;
-                    case 1:
-//                        Log.d(TAG, "Headset is plugged");
-                        if (mediaPlayer == null)
-                            break;
-                        if (!mediaPlayer.isPlaying()) {
-                            mediaPlayer.start();
-                            playButton.setImageResource(savedPausedDrawableID);
-                        }
-                        break;
-                    default:
-//                        Log.d(TAG, "I have no idea what the headset state is");
-                }
-            }
-        }
-    }
-
-
-
 
 
 
@@ -670,14 +428,8 @@ public class FloatingViewService extends Service {
 
     public void destroyMusicPlayer() {
         serviceAlive = false;
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
         recyclerView = null;
-        _songs = null;
+
         seekBar = null;
         volumeBar = null;
         songAdapter = null;
@@ -697,8 +449,7 @@ public class FloatingViewService extends Service {
     public void onDestroy() {
         super.onDestroy();
 //        Log.d("XXX", "onDestroy Called");
-        unregisterReceiver(myReceiver);
-        isMusicPlaying = false; //stop the thread
+        MusicPlayer.isMusicPlaying = false; //stop the thread
         if (mParentView != null) mWindowManager.removeView(mParentView);
     }
 

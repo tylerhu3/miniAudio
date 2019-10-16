@@ -77,13 +77,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
         TextView tvSongName,tvSongArtist;
         private final Context mContext;
 
-        //        Button btnAction;
         LinearLayout row;
         public SongHolder(View itemView) {
             super(itemView);
             this.mContext = itemView.getContext();
-
-
 
             row =  itemView.findViewById(R.id.rowSongTemplate);
             tvSongName = itemView.findViewById(R.id.tvSongName);

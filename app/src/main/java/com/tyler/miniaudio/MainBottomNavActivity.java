@@ -1,5 +1,7 @@
 package com.tyler.miniaudio;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -7,13 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,17 +19,53 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
 
 
 public class MainBottomNavActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static int blackOn = 0;
+    public static Context mContext;
+    public static ArrayList<SongInfo> _songs;
+    public static SongAdapter songAdapter;
+    // a static variable to get a reference of our application context
+    public static Context contextOfApplication;
+
+    public static MusicIntentReceiver myReceiver;
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
+    }
+
+    ///This is for headphone disconnect
+    private class MusicIntentReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+                if (!MusicPlayer.isPlaying()) //If music is not playing when unplug don't bother
+                    return;
+                int state = intent.getIntExtra("state", -1);
+                switch (state) {
+                    case 0:
+//                        Log.d(TAG, "Headset is unplugged");
+
+                        if (MusicPlayer.isPlaying()) {
+                            MusicPlayer.playPause();
+                        }
+                        break;
+                    case 1:
+//                        Log.d(TAG, "Headset is plugged");
+                        break;
+                    default:
+//                        Log.d(TAG, "I have no idea what the headset state is");
+                }
+            }
+        }
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,6 +85,7 @@ public class MainBottomNavActivity extends AppCompatActivity {
                     selectedFragment = new MiscFragment();
                     break;
             }
+
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     selectedFragment).commit();
             return true;
@@ -62,6 +95,8 @@ public class MainBottomNavActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
+        contextOfApplication = getApplicationContext();
         setContentView(R.layout.activity_main_bottom_nav);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -69,8 +104,24 @@ public class MainBottomNavActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
         checkUserPermission();
+        headPhoneDetection();
     }
 
+    private void headPhoneDetection(){
+        //For detecting headphone disconnects we will new a MusicIntentReciever
+        // check " private class MusicIntentReceiver extends BroadcastReceiver" below:
+        myReceiver = new MusicIntentReceiver();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(myReceiver, filter);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
+    }
 
     public void checkUserPermission() {
 
@@ -95,9 +146,6 @@ public class MainBottomNavActivity extends AppCompatActivity {
             startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         }
     }
-
-
-
 
 
     @Override

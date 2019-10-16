@@ -5,15 +5,17 @@ public class SeekBarTracker extends Thread {
     @Override
     public void run() {
 //            Log.d("XXX", "thread run");
-        while (FloatingViewService.getInstance().isMusicPlaying) {
+        while (MusicPlayer.isMusicPlaying) {
             try {
                 Thread.sleep(500);
-                if (FloatingViewService.getInstance().mediaPlayer != null) {
+                if (FloatingViewService.serviceAlive && MusicPlayer.isMediaPlayerAlive()) {
                     FloatingViewService.getInstance().seekBar.post(new Runnable() {
                         @Override
                         public void run() {
-                            FloatingViewService.getInstance().seekBar.
-                                    setProgress(FloatingViewService.getInstance().mediaPlayer.getCurrentPosition());
+                            if(FloatingViewService.serviceAlive) {
+                                FloatingViewService.getInstance().seekBar.
+                                        setProgress(MusicPlayer.getProgress());
+                            }
 //                                Log.d("XXX", "Seek Bar position set");
                         }
                     });
@@ -21,9 +23,8 @@ public class SeekBarTracker extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
 //                    Log.d("RXunwa", "Thread Interruptted");
-                FloatingViewService.getInstance().seekBarProgression = null;
+//                MusicPlayer.seekBarProgression = null;
             }
-//                Log.d("Runwa", "run: " + 1);
         }
 
     }
