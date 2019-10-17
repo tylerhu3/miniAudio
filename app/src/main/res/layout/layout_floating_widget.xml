@@ -15,7 +15,6 @@
 
         <!--View while view is collapsed-->
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/collapse_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,8 +23,8 @@
             <!--Icon of floating widget -->
             <ImageView
                 android:id="@+id/collapsed_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_android_circle"
                 tools:ignore="ContentDescription" />
@@ -43,6 +42,7 @@
         <!--View while view is expanded-->
         <!--android:visibility="gone"-->
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/expanded_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                     android:src="@drawable/button_minize2"
                     tools:ignore="ContentDescription, newAPI"
                     android:clickable="true"
-                    android:background="?android:selectableItemBackgroundBorderless"/>
+                    />
 
                 <ImageView
                     android:id="@+id/buttonMax"
@@ -72,7 +72,7 @@
                     android:src="@drawable/button_max"
                     tools:ignore="ContentDescription, newAPI"
                     android:clickable="true"
-                    android:background="?android:selectableItemBackgroundBorderless"
+                    
                     />
 
                 <ImageView
@@ -84,7 +84,7 @@
                     android:src="@drawable/button_close2"
                     tools:ignore="ContentDescription, newAPI"
                     android:clickable="true"
-                    android:background="?android:selectableItemBackgroundBorderless"
+                    
                 />
 
             </RelativeLayout>
@@ -124,7 +124,7 @@
 
                             tools:ignore="ContentDescription, newAPI"
                             android:clickable="true"
-                            android:background="?android:selectableItemBackgroundBorderless"/>
+                            />
 
                         <!--Play button-->
                         <ImageView
@@ -137,7 +137,7 @@
                             android:src="@drawable/play"
                             tools:ignore="ContentDescription, newAPI"
                             android:clickable="true"
-                            android:background="?android:selectableItemBackgroundBorderless"/>
+                            />
 
                         <!--Next button-->
                         <ImageView
@@ -149,7 +149,7 @@
                             android:layout_marginTop="10dp"
                             tools:ignore="ContentDescription, newAPI"
                             android:clickable="true"
-                            android:background="?android:selectableItemBackgroundBorderless"
+                            
                             android:src="@drawable/next">
                         </ImageView>
 

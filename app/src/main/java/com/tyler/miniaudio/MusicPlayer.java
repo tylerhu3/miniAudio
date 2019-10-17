@@ -1,23 +1,14 @@
 package com.tyler.miniaudio;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MusicPlayer extends Activity {
@@ -52,7 +43,7 @@ public class MusicPlayer extends Activity {
     }
 
 
-    MusicPlayer(){
+    public MusicPlayer(){
         setUpMediaPlayer();
     }
 
@@ -67,6 +58,15 @@ public class MusicPlayer extends Activity {
         }
     }
 
+    public static void stopMusic(){
+        if(mediaPlayer == null)
+            return;
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+        mediaPlayer.release();
+        mediaPlayer = null;
+    }
+
     public static MusicPlayer getInstance() {
         return musicPlayer;
     }
@@ -79,7 +79,7 @@ public class MusicPlayer extends Activity {
     public static void nextSong (){
 
         if (FloatingViewService.serviceAlive)
-            FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPlayDrawableID);
+            FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
         if (currentSong + 1 !=  MainBottomNavActivity._songs.size()) { //We are not final track
 //                                Log.d("XXX", "Next Song");
@@ -100,12 +100,14 @@ public class MusicPlayer extends Activity {
                 return; // stop playing since we got to the last track
             }
         }
+
+        Log.d("XXX", "inside nextSong");
         musicPlayerSongChange(currentSong);
     }
 
     public static void prevSong (){
         if (FloatingViewService.serviceAlive)
-            FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPlayDrawableID);
+            FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
         if (currentSong  !=  0) { //We are not final track
 //                                Log.d("XXX", "Next Song");
@@ -126,7 +128,7 @@ public class MusicPlayer extends Activity {
             }
         }
 
-        musicPlayerSongChange(MainBottomNavActivity._songs.size()-1 );
+        musicPlayerSongChange(currentSong );
     }
 
     public static boolean isPlaying(){
@@ -135,23 +137,48 @@ public class MusicPlayer extends Activity {
 
 
     public static void playPause(){
+        Log.d("XXX", "playPause Start");
         if(mediaPlayer != null)
         {
+            Log.d("XXX", "playPause not null");
             if(mediaPlayer.isPlaying())
+            {
+
+                Log.d("XXX", "playPause pausing");
                 mediaPlayer.pause();
+                if(FloatingViewService.serviceAlive){
+                    FloatingViewService.getInstance().playButton.setImageResource(
+                            FloatingViewService.getInstance().savedPlayDrawableID);
+                }
+            }
+
             else{
+
+
+                Log.d("XXX", "playPause playing");
                 mediaPlayer.start();
+                if(FloatingViewService.serviceAlive){
+                    FloatingViewService.getInstance().playButton.setImageResource(
+                            FloatingViewService.getInstance().savedPausedDrawableID);
+
+                }
             }
         }
         else{
             musicPlayerSongChange(currentSong);
+            if(FloatingViewService.serviceAlive){
+
+                FloatingViewService.getInstance().playButton.setImageResource(
+                        FloatingViewService.getInstance().savedPausedDrawableID);
+
+            }
         }
 
     }
 
     public static void shuffleSongs(){
         if (shuffleOn == 0) {
-            if (MainBottomNavActivity.blackOn == 0) {
+            if (FloatingViewService.themeNumber == 0) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_one_black_24dp);
             }
@@ -166,7 +193,7 @@ public class MusicPlayer extends Activity {
             shuffleOn = 2;
         } else if (shuffleOn == 2){
 
-            if (MainBottomNavActivity.blackOn == 0) {
+            if (FloatingViewService.themeNumber == 0) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_shuffle_black_24dp);
             }
@@ -181,7 +208,7 @@ public class MusicPlayer extends Activity {
         }
         else{
 
-            if (MainBottomNavActivity.blackOn == 0) {
+            if (FloatingViewService.themeNumber == 0) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
             }
@@ -245,6 +272,8 @@ public class MusicPlayer extends Activity {
 
                             if (FloatingViewService.serviceAlive)
                             {
+                                FloatingViewService.getInstance().playButton.setImageResource(
+                                        FloatingViewService.getInstance().savedPausedDrawableID);
                                 FloatingViewService.getInstance().seekBar.setProgress(0);
                                 FloatingViewService.getInstance().seekBar.setMax(mediaPlayer.getDuration());
                             }
@@ -253,9 +282,6 @@ public class MusicPlayer extends Activity {
 //                            Log.d("Prog", "run: " + mediaPlayer.getDuration());
                         }
                     });
-                    if (FloatingViewService.serviceAlive)
-                        FloatingViewService.getInstance().playButton.setImageResource(
-                                FloatingViewService.getInstance().savedPausedDrawableID);
 
                     //When the current mediafile is finish playing do this:
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -269,7 +295,7 @@ public class MusicPlayer extends Activity {
                     e.printStackTrace();
 //                    Log.d("XXX", e.getMessage());
                     //This statement below
-                    Toast.makeText(MusicPlayer.getInstance(), "Error Playing Song", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FloatingViewService.getInstance().mContext, "Error Playing Song", Toast.LENGTH_SHORT).show();
                 }
             }
         };

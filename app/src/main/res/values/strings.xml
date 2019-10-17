@@ -4,5 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-
+    <string name="AboutApp">A Background music play that
+        plays music behind all other apps and a volume bar that is App independent. In future revisions
+        playlist will be implemented</string>
 </resources>

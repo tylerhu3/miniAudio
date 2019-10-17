@@ -1,5 +1,7 @@
 package com.tyler.miniaudio;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,6 +10,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -31,7 +34,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import static android.view.View.VISIBLE;
 /*
 *
@@ -51,8 +53,9 @@ public class FloatingViewService extends Service {
     public ImageView chatHeadImage;
     public  ViewGroup mParentView;
     static FloatingViewService mfloatViewService;
-    Notification notification;
+    public Notification notification;
     public SongAdapter songAdapter;
+    public static int lockIcon = 0;
     //Context of this service:
     public  Context mContext;
     public RecyclerView recyclerView;
@@ -80,15 +83,11 @@ public class FloatingViewService extends Service {
         mfloatViewService = this;
         mContext = this;
         setupView();
-//        mPlayer = MusicPlayer.getInstance();
-//        Log.d("XXX", "" + mPlayer);
-        // mPlayer needs to be before setUpMediaPlayerViews because we use mPlayer there.
         setUpMediaPlayerViews();
         themeSetter();
         setUpRecycler();
         setButtonsMusicButtons();
         startForegroundService();
-
     }
 
 
@@ -118,7 +117,6 @@ public class FloatingViewService extends Service {
                 MusicPlayer.prevSong();
             }
         });
-
     }
 
 
@@ -159,7 +157,6 @@ public class FloatingViewService extends Service {
                 float newVolume = ((float) progress / (float) seekBar.getMax());
                 //Display the newly selected number from picker
                 MusicPlayer.setVolume(newVolume);
-
             }
 
             @Override
@@ -188,7 +185,6 @@ public class FloatingViewService extends Service {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //Display the newly selected number from picker
                     MusicPlayer.setMediaPlayerProgress(progress);
-
             }
         });
         //Attach variables to media buttons
@@ -216,23 +212,7 @@ public class FloatingViewService extends Service {
                     lastTouchTime = -1;
                     collapsedView.setVisibility(VISIBLE);
                     expandedView.setVisibility(View.GONE);
-//                    if (params.x < midScreenWidthSize) {
-//                        moveChatHead(Math.round(params.x), 0);
-//                    } else {
-//
-//                        int orientation = getResources().getConfiguration().orientation;
-//                        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//                            // In landscape
-//                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().heightPixels);
-//                            Log.d("XXX", "landscape " + Resources.getSystem().getDisplayMetrics().heightPixels);
-//                        } else {
-//                            // In portrait
-//                            moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
-//
-//                            Log.d("XXX", "wid " + Resources.getSystem().getDisplayMetrics().heightPixels);
-//
-//                        }
-//                    }
+
                     return true;
                 } else {
                     lastTouchTime = thisTime;
@@ -258,13 +238,9 @@ public class FloatingViewService extends Service {
             public void onClick(View view) {
                 collapsedView.setVisibility(VISIBLE);
                 expandedView.setVisibility(View.GONE);
-//                if (params.x < midScreenWidthSize) {
-//                    //animations missing here
-//                    moveChatHead(Math.round(params.x), 0);
-//                } else {
-                //animations missing here
-//                    moveChatHead(Math.round(params.x), Resources.getSystem().getDisplayMetrics().widthPixels);
-//                }
+                if(lockIcon == 1){ //snap icon to side of screen
+                    lockHead(Math.round(params.x));
+                }
             }
         });
 
@@ -278,20 +254,47 @@ public class FloatingViewService extends Service {
         });
 
         shuffleButton = mParentView.findViewById(R.id.buttonShuffle);
-        //TODO: The shuffle button comes on as empty blank by default
-        //so this statement below just fills it in with a loop icon
-
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*This is honestly better off as a circular linkedList but I wont both with
-                * the trouble, just a possible future revision*/
                 MusicPlayer.shuffleSongs();
 
             }
         });
 
     }
+
+
+    public void lockHead(int x){
+        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        if (x < screenWidth/2) {
+            moveChatHead(Math.round(x), 0);
+        } else {
+            moveChatHead(Math.round(x), screenWidth);
+        }
+    }
+
+    //////////////////////////////// For Animation Start
+
+    public void moveChatHead(int start, int finish){
+        AnimatorSet buttonAnimator = new AnimatorSet();
+        ValueAnimator buttonAnimatorX = ValueAnimator.ofFloat(start,finish
+        );
+        buttonAnimatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int newX = Math.round(Float.valueOf(animation.getAnimatedValue().toString()));
+                params.x = newX;
+                mWindowManager.updateViewLayout(mParentView, params);
+            }
+        });
+        buttonAnimatorX.setDuration(250);
+        buttonAnimator.play(buttonAnimatorX);
+        buttonAnimator.start();
+    }
+
+
+    //////////////////////////////// For Animation End
 
     //We make this class a singleton with the below
 
@@ -306,6 +309,31 @@ public class FloatingViewService extends Service {
     }
 
 
+    public void changeBubbleHead(){
+        switch(headChoice){
+            case 1 : chatHeadImage.setImageResource(R.drawable.ic_android_circle); break;
+
+            case 2 : chatHeadImage.setImageResource(R.drawable.ic_android_circle2); break;
+
+            case 3 : chatHeadImage.setImageResource(R.drawable.ic_android_circle3); break;
+
+            case 4 : chatHeadImage.setImageResource(R.drawable.ic_android_circle4); break;
+
+            case 5 : chatHeadImage.setImageResource(R.drawable.ic_android_circle5); break;
+
+            case 6 : chatHeadImage.setImageResource(R.drawable.ic_android_circle6); break;
+
+            case 7 : chatHeadImage.setImageResource(R.drawable.ic_android_circle7); break;
+
+            case 8 : chatHeadImage.setImageResource(R.drawable.ic_android_circle8); break;
+
+            case 9 : chatHeadImage.setImageResource(R.drawable.ic_android_circle9); break;
+
+            case 10 : chatHeadImage.setImageResource(R.drawable.ic_android_circle10); break;
+            default:
+                chatHeadImage.setImageResource(R.drawable.ic_android_circle);
+        }
+    }
 
 /*public void themeSetter() - associated all the imageView variables
 * this has nothing to do with the MusicPlayer class. The ImageViews associated with that are set up
@@ -317,24 +345,11 @@ public class FloatingViewService extends Service {
         //in songAdapter class line 50
         TextView volumeBarText, seekBarText;
         chatHeadImage = mFloatingView.findViewById(R.id.collapsed_iv);
-        themeNumber = MainBottomNavActivity.blackOn;
-
-        switch(headChoice){
-            case 1 : chatHeadImage.setImageResource(R.drawable.ic_android_circle); break;
-
-            case 2 : chatHeadImage.setImageResource(R.drawable.ic_android_circle2); break;
-
-            case 3 : chatHeadImage.setImageResource(R.drawable.ic_android_circle3); break;
-
-            case 4 : chatHeadImage.setImageResource(R.drawable.ic_android_circle4); break;
-                    default:
-                        chatHeadImage.setImageResource(R.drawable.ic_android_circle);
-                }
+        changeBubbleHead();
 
 
         if (themeNumber == 1) { //Dark Theme
             shuffleButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-
             albumart.setImageResource(R.drawable.album_art_2);
             playButton.setImageResource(R.drawable.play2);
             nextButton.setImageResource(R.drawable.next2);
@@ -348,7 +363,6 @@ public class FloatingViewService extends Service {
             expandedView.setBackgroundResource(R.drawable.round_corners_black);
         } else { //White Theme
             shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
-
             albumart.setImageResource(R.drawable.album_art_1);
             playButton.setImageResource(R.drawable.play);
             nextButton.setImageResource(R.drawable.next);
@@ -363,13 +377,23 @@ public class FloatingViewService extends Service {
         }
     }
 
-
-
     /*starForeground Service - creates a notification intent */
     public void startForegroundService() {
 
         Intent intent = new Intent(getApplicationContext(), SetVisibility.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent broadcastIntent = new Intent(this, PlayPauseMusic.class);
+        PendingIntent playPauseIntent = PendingIntent.getBroadcast(this,
+                0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent BI_Next = new Intent(this, NextMusic.class);
+        PendingIntent nextIntent = PendingIntent.getBroadcast(this,
+                0, BI_Next, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent BI_Prev = new Intent(this, PrevMusic.class);
+        PendingIntent prevIntent = PendingIntent.getBroadcast(this,
+                0, BI_Prev, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "my_channel_01";
@@ -379,34 +403,32 @@ public class FloatingViewService extends Service {
 
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
+
             notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.noticon2)
-                    .setContentTitle("MiniAudio")
-                    .setContentText("Touch here to Expand")
-                    .addAction(R.drawable.ic_zoom_out_map_black_24dp, "On",pi)
+                    .setContentTitle("Working in Background")
+                    .setContentText("")
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                             .setShowActionsInCompactView(0))
+                    .addAction(R.drawable.ic_last_page_black_24dp, "Play/Pause",playPauseIntent)
+                    .addAction(R.drawable.ic_chevron_right_black_24dp, "Next",nextIntent)
+                    .addAction(R.drawable.ic_chevron_left_black_24dp, "Prev",prevIntent)
                     .setContentIntent(pi).build();
             startForeground(1337, notification);
+
         } else {
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.noticon2)
-                    .setContentTitle("MiniAudio")
-                    .setContentText("Touch here to expand")
-                    .addAction(R.drawable.ic_zoom_out_map_black_24dp, "On",pi)
+                    .setContentTitle("Working in Background")
+                    .setContentText("")
+                    .addAction(R.drawable.ic_last_page_black_24dp, "Play/Pause", playPauseIntent)
+                    .addAction(R.drawable.ic_chevron_right_black_24dp, "Next",nextIntent)
+                    .addAction(R.drawable.ic_chevron_left_black_24dp, "Prev",prevIntent)
                     .setContentIntent(pi).build();
             //The ID needs to be unique, right now it's 1337
             startForeground(1337, notification);
         }
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -429,18 +451,14 @@ public class FloatingViewService extends Service {
     public void destroyMusicPlayer() {
         serviceAlive = false;
         recyclerView = null;
-
         seekBar = null;
         volumeBar = null;
         songAdapter = null;
         playButton  = prevButton = null;
         nextButton = null;
+        MusicPlayer.stopMusic();
         stopSelf();
     }
-
-
-
-
 
 
 
@@ -452,10 +470,6 @@ public class FloatingViewService extends Service {
         MusicPlayer.isMusicPlaying = false; //stop the thread
         if (mParentView != null) mWindowManager.removeView(mParentView);
     }
-
-
-
-
 
 
 
@@ -557,13 +571,10 @@ public class FloatingViewService extends Service {
                         if (expandedView.getVisibility() != View.GONE)
                             return true;
 
-                        //The code below moves the chathead back to the side of the screen
-//                        if (event.getRawX() < midScreenWidthSize) {
-//                            moveChatHead(Math.round(event.getRawX()), 0);
-//                        } else {
-//                            moveChatHead(Math.round(event.getRawX()), 1080);
-//                        }
-                        //////////////////////////////// For Animation
+                        if(lockIcon == 1){ //snap icon to side of screen
+                            lockHead(Math.round(event.getRawX()));
+                        }
+
                         if (Xdiff < 10 && Ydiff < 10) {
                             if (isViewCollapsed()) {
                                 //When user clicks on the image view of the collapsed layout,
@@ -579,15 +590,7 @@ public class FloatingViewService extends Service {
                         //Calculate the X and Y coordinates of the view.
                         params.x = initialX + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
-//                        Log.d("Floating View Service", "x: " + params.x + " y: " + params.x);
 
-//                        //This if statement below is to fix a strange draw delay
-//                        if (initialX > midScreenWidthSize && expandedView.getVisibility() == View.GONE) {
-//                            params.x -= 120;
-//                        }
-//                        if (initialX > midScreenWidthSize && expandedView.getVisibility() != View.GONE) {
-//                            params.x -= 600;
-//                        }
                         //Update the layout with new X & Y coordinate
                         mWindowManager.updateViewLayout(mParentView, params);
                         return true;
@@ -601,8 +604,6 @@ public class FloatingViewService extends Service {
         mFloatingView.setVisibility(VISIBLE);
         mFloatingView.startAnimation(in);
     }
-
-
 
 
     public FloatingViewService() {

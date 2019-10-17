@@ -17,7 +17,6 @@
 
         <!--View while view is collapsed-->
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/collapse_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,8 +25,8 @@
             <!--Icon of floating widget -->
             <ImageView
                 android:id="@+id/collapsed_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_android_circle"
                 tools:ignore="ContentDescription" />
@@ -45,6 +44,8 @@
         <!--View while view is expanded-->
         <!--android:visibility="gone"-->
         <RelativeLayout
+
+            android:visibility="gone"
             android:id="@+id/expanded_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

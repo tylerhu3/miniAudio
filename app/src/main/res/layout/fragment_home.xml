@@ -4,129 +4,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    android:background="@color/colorWhite">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:padding="3dp"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:text="Bubble head Choice:"
+            android:text="Icon Choice:"
             android:textColor="@color/colorBlack"
             android:textSize="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/head1"
-            app:layout_constraintStart_toStartOf="@+id/head1" />
-
-
-        <ImageView
-            android:id="@+id/head1"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_android_circle"
-            app:layout_constraintBottom_toBottomOf="@+id/head2"
-            app:layout_constraintEnd_toStartOf="@+id/head2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/head2" />
-
-        <ImageView
-            android:id="@+id/head2"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
-            android:src="@drawable/ic_android_circle2"
-            app:layout_constraintBottom_toBottomOf="@+id/head3"
-            app:layout_constraintEnd_toStartOf="@+id/head3"
-            app:layout_constraintStart_toEndOf="@+id/head1"
-            app:layout_constraintTop_toTopOf="@+id/head3" />
-
-        <ImageView
-            android:id="@+id/head3"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
-            android:src="@drawable/ic_android_circle3"
-            app:layout_constraintBottom_toBottomOf="@+id/head4"
-            app:layout_constraintEnd_toStartOf="@+id/head4"
-            app:layout_constraintStart_toEndOf="@+id/head2"
-            app:layout_constraintTop_toTopOf="@+id/head4" />
-
-        <ImageView
-            android:id="@+id/head4"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="42dp"
-            android:layout_marginEnd="53dp"
-            android:layout_marginRight="53dp"
-            android:src="@drawable/ic_android_circle4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/head3"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/linearLayout"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="48dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/head1"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle" />
+
+            <ImageView
+                android:id="@+id/head2"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle2" />
+
+            <ImageView
+                android:id="@+id/head3"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle3" />
+
+            <ImageView
+                android:id="@+id/head4"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle4" />
+
+            <ImageView
+                android:id="@+id/head5"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle5" />
+
+            <ImageView
+                android:id="@+id/head6"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle6" />
+
+            <ImageView
+                android:id="@+id/head7"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle7" />
+
+            <ImageView
+                android:id="@+id/head8"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle8" />
+
+            <ImageView
+                android:id="@+id/head9"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle9" />
+
+            <ImageView
+                android:id="@+id/head10"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_margin="11dp"
+                android:src="@drawable/ic_android_circle10" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
         <Button
             android:id="@+id/launchButton"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="128dp"
-            android:layout_marginLeft="128dp"
-            android:background="@drawable/round_button"
+            android:layout_width="156dp"
+            android:layout_height="156dp"
+            android:background="@drawable/launch_button"
             android:clickable="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Launch"
             android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498"
             tools:ignore="ContentDescription, newAPI">
 
 
         </Button>
 
-        <Button
-            android:id="@+id/buttonDestroyWidget"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="31dp"
-            android:text="Close Music Player"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/buttonDestroyWidget"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:text="Close Music Player" />
 
         <Switch
-            android:id="@+id/themeSwitch"
+            android:id="@+id/lockSwitch"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/themeSwitch"
+            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="39dp"
-            android:text="Dark Theme"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_gravity="bottom"
+            android:text="Lock to Side" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Switch
+        android:id="@+id/themeSwitch"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/buttonDestroyWidget"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="0dp"
+        android:text="Dark Theme" />
 
-
-
-
+    </RelativeLayout>
 </FrameLayout>

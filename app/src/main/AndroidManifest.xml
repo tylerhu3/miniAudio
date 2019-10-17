@@ -3,7 +3,6 @@
     package="com.tyler.miniaudio">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -38,7 +37,14 @@ It's important for the below to be styled as NoDisplay so that when we activate
         <activity
             android:name=".SetVisibility"
             android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name=".MusicPlayer"
+            android:theme="@android:style/Theme.NoDisplay" />
         <activity android:name=".Shutdown" />
+        <receiver android:name=".NotificationReceiver" />
+        <receiver android:name=".PlayPauseMusic" />
+        <receiver android:name=".NextMusic" />
+        <receiver android:name=".PrevMusic" />
     </application>
 
 </manifest>

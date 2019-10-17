@@ -1,9 +1,7 @@
 package com.tyler.miniaudio;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import static android.view.View.VISIBLE;
-import static com.tyler.miniaudio.MainBottomNavActivity.blackOn;
-import static com.tyler.miniaudio.MainBottomNavActivity.myReceiver;
+import static com.tyler.miniaudio.MainBottomNavActivity.mContext;
 
 public class HomeFragment extends Fragment {
 
@@ -49,17 +46,14 @@ public class HomeFragment extends Fragment {
 
     ////////// Load ALL audio from Storage
     private void loadSongs(){
-
         Context applicationContext = MainBottomNavActivity.getContextOfApplication();
         applicationContext.getContentResolver();
         MainBottomNavActivity._songs = new ArrayList<>();
-        Toast.makeText(MainBottomNavActivity.mContext, "Loading Songs...", Toast.LENGTH_SHORT).show();
-
+//        Toast.makeText(MainBottomNavActivity.mContext, "Loading Songs...", Toast.LENGTH_SHORT).show();
         //grab music files from "sdcard":
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         // Grab music from internal storage:
-        Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-
+//        Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0";
         Cursor cursor = applicationContext.getContentResolver().query(uri, null, selection, null, null);
         if (cursor != null) {
@@ -73,13 +67,12 @@ public class HomeFragment extends Fragment {
                         MainBottomNavActivity._songs.add(s);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(MainBottomNavActivity.mContext, "add song error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainBottomNavActivity.mContext, "Load song error", Toast.LENGTH_SHORT).show();
 
                     }
                 } while (cursor.moveToNext());
             }
-            Toast.makeText(MainBottomNavActivity.mContext, "Size of MainBottomNavActivity._songs" + MainBottomNavActivity._songs.size(), Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(MainBottomNavActivity.mContext, "Size of MainBottomNavActivity._songs" + MainBottomNavActivity._songs.size(), Toast.LENGTH_SHORT).show();
             cursor.close();
             MainBottomNavActivity.songAdapter = new SongAdapter(MainBottomNavActivity.mContext, MainBottomNavActivity._songs);
             MainBottomNavActivity.songAdapter.setOnItemClickListener(new SongAdapter.OnItemClickListener() {
@@ -106,7 +99,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         new BubbleHead(view);
         view.findViewById(R.id.launchButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +113,8 @@ public class HomeFragment extends Fragment {
                     getActivity().startService(new Intent(getActivity(), FloatingViewService.class));
                     getActivity().moveTaskToBack(true);
                 }
+
+                getActivity().moveTaskToBack(true);
 //                getActivity().finish();
 
             }
@@ -142,19 +136,50 @@ public class HomeFragment extends Fragment {
         });
 
         final Switch imySwitch = view.findViewById(R.id.themeSwitch);
-        if(blackOn == 1){
+        if(FloatingViewService.themeNumber == 1){
+            imySwitch.setChecked(true);
+        }
+
+        //this screen is to allow the floating icon to snap to the side of the screen
+        final Switch lockSwitch = view.findViewById(R.id.lockSwitch);
+        lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                if(lockSwitch.isChecked()){
+                    FloatingViewService.lockIcon = 1;
+                }
+                else
+                {
+                    FloatingViewService.lockIcon = 0;
+                }
+            }
+        });
+
+        if(FloatingViewService.themeNumber == 1){
             imySwitch.setChecked(true);
         }
         imySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
+
+                if(FloatingViewService.serviceAlive){
+                    Toast.makeText(mContext, "Close and Reopen music player for changes", Toast.LENGTH_SHORT).show();
+                }
                 if(imySwitch.isChecked()){
-                    blackOn = 1;
+                    FloatingViewService.themeNumber = 1;
+                    if(FloatingViewService.serviceAlive){
+                        FloatingViewService.getInstance().themeSetter();
+                    }
                 }
                 else
                 {
-                    blackOn = 0;
+                    FloatingViewService.themeNumber = 0;
+                    if(FloatingViewService.serviceAlive){
+                        FloatingViewService.getInstance().themeSetter();
+                    }
                 }
             }
         });
