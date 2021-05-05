@@ -119,13 +119,16 @@ public class MainBottomNavActivity extends AppCompatActivity {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
-                return;
             }
         }
         //Check if the application has draw over other apps permission or not?
         //This permission is by default available for API<23. But for API > 23
         //you have to ask for the permission in runtime.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            Toast.makeText(this,
+                    "Draw over other app permission not available. Turn on permission and " +
+                            "reopen app",
+                    Toast.LENGTH_SHORT).show();
             //If the draw over permission is not available open the settings screen
             //to grant the permission.
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
