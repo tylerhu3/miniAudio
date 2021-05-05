@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import android.util.Log;
 import android.view.MenuItem;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-
 public class MainBottomNavActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static Context mContext;
@@ -28,12 +28,9 @@ public class MainBottomNavActivity extends AppCompatActivity {
     public static SongAdapter songAdapter;
     // a static variable to get a reference of our application context
     public static Context contextOfApplication;
-
     public static MusicIntentReceiver myReceiver;
-    public static Context getContextOfApplication()
-    {
-        return contextOfApplication;
-    }
+    public static String TAG="Background Audio Player";
+
 
     ///This is for headphone disconnect
     private class MusicIntentReceiver extends BroadcastReceiver {
@@ -45,17 +42,17 @@ public class MainBottomNavActivity extends AppCompatActivity {
                 int state = intent.getIntExtra("state", -1);
                 switch (state) {
                     case 0:
-//                        Log.d(TAG, "Headset is unplugged");
+                        Log.d(TAG, "Headset is unplugged");
 
                         if (MusicPlayer.isPlaying()) {
                             MusicPlayer.playPause();
                         }
                         break;
                     case 1:
-//                        Log.d(TAG, "Headset is plugged");
+                        Log.d(TAG, "Headset is plugged");
                         break;
                     default:
-//                        Log.d(TAG, "I have no idea what the headset state is");
+                        Log.d(TAG, "I have no idea what the headset state is");
                 }
             }
         }
@@ -89,10 +86,9 @@ public class MainBottomNavActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
-
         contextOfApplication = getApplicationContext();
+        SavedPreferences.init(contextOfApplication);
         setContentView(R.layout.activity_main_bottom_nav);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -110,8 +106,6 @@ public class MainBottomNavActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(myReceiver, filter);
     }
-
-
 
     @Override
     protected void onDestroy() {

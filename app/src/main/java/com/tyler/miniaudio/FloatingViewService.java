@@ -55,8 +55,9 @@ public class FloatingViewService extends Service {
     static FloatingViewService mfloatViewService;
     public Notification notification;
     public SongAdapter songAdapter;
-    public static int lockIcon = 0;
     //Context of this service:
+    SavedPreferences savedPreferences;
+
     public  Context mContext;
     public RecyclerView recyclerView;
 //    MusicPlayer mPlayer;
@@ -71,7 +72,6 @@ public class FloatingViewService extends Service {
     //multiple themes for the media player and since the playButton is the only button that changes
     //from play to pause, Im using the variables
     int savedPlayDrawableID, savedPausedDrawableID;
-    public static int themeNumber = 0, headChoice = 0;
     int seekBarColor = Color.RED;
 
 
@@ -82,6 +82,7 @@ public class FloatingViewService extends Service {
         serviceAlive = true;
         mfloatViewService = this;
         mContext = this;
+        savedPreferences =  SavedPreferences.getInstance();
         setupView();
         setUpMediaPlayerViews();
         themeSetter();
@@ -238,7 +239,8 @@ public class FloatingViewService extends Service {
             public void onClick(View view) {
                 collapsedView.setVisibility(VISIBLE);
                 expandedView.setVisibility(View.GONE);
-                if(lockIcon == 1){ //snap icon to side of screen
+                Boolean lockToSideOn = savedPreferences.get(SavedPreferences.SNAP_TO_GRIP, true);
+                if(lockToSideOn){ //snap icon to side of screen
                     lockHead(Math.round(params.x));
                 }
             }
@@ -310,7 +312,9 @@ public class FloatingViewService extends Service {
 
 
     public void changeBubbleHead(){
-        switch(headChoice){
+
+        int iconChoice = savedPreferences.get(SavedPreferences.ICON_NUMBER, 1);
+        switch(iconChoice){
             case 1 : chatHeadImage.setImageResource(R.drawable.ic_android_circle); break;
 
             case 2 : chatHeadImage.setImageResource(R.drawable.ic_android_circle2); break;
@@ -340,15 +344,14 @@ public class FloatingViewService extends Service {
 * in setUpMediaPlayerViews() method
 * with the correct layout id in layout_floating_widget.xml*/
     public void themeSetter() {
-
         //Important :: Please notice that setting the textcolor of the recyclerView text is located
         //in songAdapter class line 50
+        Boolean lightOn = savedPreferences.get(SavedPreferences.LIGHT_MODE, true);
         TextView volumeBarText, seekBarText;
         chatHeadImage = mFloatingView.findViewById(R.id.collapsed_iv);
         changeBubbleHead();
 
-
-        if (themeNumber == 1) { //Dark Theme
+        if (!lightOn) { //Dark Theme
             shuffleButton.setImageResource(R.drawable.ic_repeat_white_24dp);
             albumart.setImageResource(R.drawable.album_art_2);
             playButton.setImageResource(R.drawable.play2);
@@ -406,7 +409,7 @@ public class FloatingViewService extends Service {
 
             notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.noticon2)
-                    .setContentTitle("Working in Background")
+                    .setContentTitle("Background Music Player")
                     .setContentText("")
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                             .setShowActionsInCompactView(0))
@@ -419,7 +422,7 @@ public class FloatingViewService extends Service {
         } else {
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.noticon2)
-                    .setContentTitle("Working in Background")
+                    .setContentTitle("Background Music Player")
                     .setContentText("")
                     .addAction(R.drawable.ic_last_page_black_24dp, "Play/Pause", playPauseIntent)
                     .addAction(R.drawable.ic_chevron_right_black_24dp, "Next",nextIntent)
@@ -430,23 +433,13 @@ public class FloatingViewService extends Service {
         }
     }
 
-
-
-
-
-
-
     /**
-     * Detect if the floating view is collapsed or expanded.
+     * Is floating view is collapsed or expanded.
      * returns true if the floating view is collapsed.
      */
     private boolean isViewCollapsed() {
         return mParentView == null || mFloatingView.findViewById(R.id.collapse_view).getVisibility() == VISIBLE;
     }
-
-
-
-
 
     public void destroyMusicPlayer() {
         serviceAlive = false;
@@ -468,6 +461,7 @@ public class FloatingViewService extends Service {
         super.onDestroy();
 //        Log.d("XXX", "onDestroy Called");
         MusicPlayer.isMusicPlaying = false; //stop the thread
+        serviceAlive = false;
         if (mParentView != null) mWindowManager.removeView(mParentView);
     }
 
@@ -489,9 +483,8 @@ public class FloatingViewService extends Service {
         mParentView = new FrameLayout(this) {
             @Override
             public boolean dispatchKeyEvent(KeyEvent event) {
+                // handle the back button code;
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                    // handle the back button code;
-                    Toast.makeText(mContext, "Back Button Pressed", Toast.LENGTH_SHORT).show();
                     expandedView.setVisibility(View.GONE);
                     collapsedView.setVisibility(VISIBLE);
                     return true;
@@ -506,8 +499,6 @@ public class FloatingViewService extends Service {
                 if (reason.equals("homekey")) {
                     expandedView.setVisibility(View.GONE);
                     collapsedView.setVisibility(VISIBLE);
-//                    Toast.makeText(mContext,"Home Button Pressed", Toast.LENGTH_SHORT).show();
-                    // handle home button
                 }
             }
 
@@ -571,7 +562,9 @@ public class FloatingViewService extends Service {
                         if (expandedView.getVisibility() != View.GONE)
                             return true;
 
-                        if(lockIcon == 1){ //snap icon to side of screen
+                        Boolean lockToSideOn = savedPreferences.get(SavedPreferences.SNAP_TO_GRIP, true);
+
+                        if(lockToSideOn){ //snap icon to side of screen
                             lockHead(Math.round(event.getRawX()));
                         }
 

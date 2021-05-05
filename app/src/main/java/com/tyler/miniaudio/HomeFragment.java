@@ -27,6 +27,7 @@ import static com.tyler.miniaudio.MainBottomNavActivity.mContext;
 
 public class HomeFragment extends Fragment {
 
+    SavedPreferences savedPreferences = SavedPreferences.getInstance();
     private Button destroyWidgetButton;
     public HomeFragment() {
         new MusicPlayer();
@@ -42,11 +43,9 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
-
     ////////// Load ALL audio from Storage
     private void loadSongs(){
-        Context applicationContext = MainBottomNavActivity.getContextOfApplication();
+        Context applicationContext = MainBottomNavActivity.contextOfApplication;
         applicationContext.getContentResolver();
         MainBottomNavActivity._songs = new ArrayList<>();
 //        Toast.makeText(MainBottomNavActivity.mContext, "Loading Songs...", Toast.LENGTH_SHORT).show();
@@ -135,32 +134,37 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        final Switch imySwitch = view.findViewById(R.id.themeSwitch);
-        if(FloatingViewService.themeNumber == 1){
-            imySwitch.setChecked(true);
+        final Switch lightThemeSwitch = view.findViewById(R.id.themeSwitch);
+
+        Boolean lightOn = savedPreferences.get(SavedPreferences.LIGHT_MODE, true);
+        if(lightOn){
+            lightThemeSwitch.setChecked(true);
         }
 
         //this screen is to allow the floating icon to snap to the side of the screen
         final Switch lockSwitch = view.findViewById(R.id.lockSwitch);
+
+        Boolean lockToSideOn = savedPreferences.get(SavedPreferences.SNAP_TO_GRIP, true);
+
+        lockSwitch.setChecked(lockToSideOn);
+
         lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 // do something, the isChecked will be
                 // true if the switch is in the On position
                 if(lockSwitch.isChecked()){
-                    FloatingViewService.lockIcon = 1;
+                    savedPreferences.put(SavedPreferences.SNAP_TO_GRIP, true);
                 }
                 else
                 {
-                    FloatingViewService.lockIcon = 0;
+                    savedPreferences.put(SavedPreferences.SNAP_TO_GRIP, false);
                 }
             }
         });
 
-        if(FloatingViewService.themeNumber == 1){
-            imySwitch.setChecked(true);
-        }
-        imySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        lightThemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
@@ -168,15 +172,16 @@ public class HomeFragment extends Fragment {
                 if(FloatingViewService.serviceAlive){
                     Toast.makeText(mContext, "Close and Reopen music player for changes", Toast.LENGTH_SHORT).show();
                 }
-                if(imySwitch.isChecked()){
-                    FloatingViewService.themeNumber = 1;
+
+                if(lightThemeSwitch.isChecked()){
+                    savedPreferences.put(SavedPreferences.LIGHT_MODE, true);
                     if(FloatingViewService.serviceAlive){
                         FloatingViewService.getInstance().themeSetter();
                     }
                 }
                 else
                 {
-                    FloatingViewService.themeNumber = 0;
+                    savedPreferences.put(SavedPreferences.LIGHT_MODE, false);
                     if(FloatingViewService.serviceAlive){
                         FloatingViewService.getInstance().themeSetter();
                     }

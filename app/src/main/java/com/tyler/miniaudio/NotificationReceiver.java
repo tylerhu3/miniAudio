@@ -11,7 +11,7 @@ public class NotificationReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         String message = intent.getStringExtra("toastMessage");
-        Log.d("XTX", "Show me the money");
+        Log.d(MainBottomNavActivity.TAG, "Notification is ready");
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

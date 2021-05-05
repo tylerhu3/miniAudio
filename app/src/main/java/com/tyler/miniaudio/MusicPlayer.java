@@ -38,8 +38,7 @@ public class MusicPlayer extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Log.d("XXX", "mmm" +context);
-
+        Log.d(MainBottomNavActivity.TAG, "mmm" +context);
     }
 
 
@@ -82,7 +81,7 @@ public class MusicPlayer extends Activity {
             FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
         if (currentSong + 1 !=  MainBottomNavActivity._songs.size()) { //We are not final track
-//                                Log.d("XXX", "Next Song");
+//                                Log.d(MainBottomNavActivity.TAG, "Next Song");
 
             if(shuffleOn == 0) {
                 ++currentSong;
@@ -101,7 +100,7 @@ public class MusicPlayer extends Activity {
             }
         }
 
-        Log.d("XXX", "inside nextSong");
+        Log.d(MainBottomNavActivity.TAG, "inside nextSong");
         musicPlayerSongChange(currentSong);
     }
 
@@ -110,7 +109,7 @@ public class MusicPlayer extends Activity {
             FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
         if (currentSong  !=  0) { //We are not final track
-//                                Log.d("XXX", "Next Song");
+//                                Log.d(MainBottomNavActivity.TAG, "Next Song");
             if(shuffleOn == 0) {
                 --currentSong;
             }
@@ -137,14 +136,14 @@ public class MusicPlayer extends Activity {
 
 
     public static void playPause(){
-        Log.d("XXX", "playPause Start");
+        Log.d(MainBottomNavActivity.TAG, "playPause Start");
         if(mediaPlayer != null)
         {
-            Log.d("XXX", "playPause not null");
+            Log.d(MainBottomNavActivity.TAG, "playPause not null");
             if(mediaPlayer.isPlaying())
             {
 
-                Log.d("XXX", "playPause pausing");
+                Log.d(MainBottomNavActivity.TAG, "playPause pausing");
                 mediaPlayer.pause();
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().playButton.setImageResource(
@@ -155,7 +154,7 @@ public class MusicPlayer extends Activity {
             else{
 
 
-                Log.d("XXX", "playPause playing");
+                Log.d(MainBottomNavActivity.TAG, "playPause playing");
                 mediaPlayer.start();
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().playButton.setImageResource(
@@ -177,8 +176,11 @@ public class MusicPlayer extends Activity {
     }
 
     public static void shuffleSongs(){
+        SavedPreferences savedPreferences = SavedPreferences.getInstance();
+        Boolean lightModeOn = savedPreferences.get(SavedPreferences.LIGHT_MODE, true);
         if (shuffleOn == 0) {
-            if (FloatingViewService.themeNumber == 0) {
+
+            if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_one_black_24dp);
             }
@@ -193,7 +195,7 @@ public class MusicPlayer extends Activity {
             shuffleOn = 2;
         } else if (shuffleOn == 2){
 
-            if (FloatingViewService.themeNumber == 0) {
+            if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_shuffle_black_24dp);
             }
@@ -208,7 +210,7 @@ public class MusicPlayer extends Activity {
         }
         else{
 
-            if (FloatingViewService.themeNumber == 0) {
+            if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
             }
@@ -293,7 +295,7 @@ public class MusicPlayer extends Activity {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-//                    Log.d("XXX", e.getMessage());
+//                    Log.d(MainBottomNavActivity.TAG, e.getMessage());
                     //This statement below
                     Toast.makeText(FloatingViewService.getInstance().mContext, "Error Playing Song", Toast.LENGTH_SHORT).show();
                 }

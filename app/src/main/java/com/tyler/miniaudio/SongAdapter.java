@@ -19,9 +19,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
     private Context context;
     private OnItemClickListener mOnItemClickListener;
 
+    SavedPreferences savedPreferences ;
+    Boolean lightModeOn ;
+
     public SongAdapter(Context context, ArrayList<SongInfo> songs) {
         this.context = context;
         this._songs = songs;
+        savedPreferences = SavedPreferences.getInstance();
+        lightModeOn = savedPreferences.get(SavedPreferences.LIGHT_MODE, true);
     }
 
     public interface OnItemClickListener {
@@ -47,7 +52,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongHolder> {
         songHolder.tvSongArtist.setText(_songs.get(i).getArtistname());
 
 
-        if(FloatingViewService.themeNumber == 0)
+        if(lightModeOn)
         {
             songHolder.tvSongName.setTextColor(Color.BLACK);
             songHolder.tvSongArtist.setTextColor(Color.BLACK);

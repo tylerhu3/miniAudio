@@ -8,10 +8,10 @@ import android.widget.Toast;
 public class BubbleHead {
 
     ImageView prev, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10;
-
+    SavedPreferences savedPreferences;
 
     BubbleHead(View V){
-
+        savedPreferences = SavedPreferences.getInstance();
         h1 = V.findViewById(R.id.head1);
         h1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -21,7 +21,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h1;
-                FloatingViewService.headChoice = 1;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 1);
                 h1.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -39,7 +39,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h2;
-                FloatingViewService.headChoice = 2;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER,2);
                 h2.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -55,7 +55,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h3;
-                FloatingViewService.headChoice = 3;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 3);
                 h3.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -71,7 +71,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h4;
-                FloatingViewService.headChoice = 4;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 4);
                 h4.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -87,7 +87,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h5;
-                FloatingViewService.headChoice = 5;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER,5);
                 h5.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -103,7 +103,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h6;
-                FloatingViewService.headChoice = 6;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER,6);
                 h6.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -119,7 +119,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h7;
-                FloatingViewService.headChoice = 7;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 7);
                 h7.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -135,7 +135,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h8;
-                FloatingViewService.headChoice = 8;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 8);
                 h8.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -151,7 +151,7 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h9;
-                FloatingViewService.headChoice = 9;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 9);
                 h9.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
@@ -167,15 +167,12 @@ public class BubbleHead {
                     prev.setBackgroundColor(Color.WHITE);
                 }
                 prev = h10;
-                FloatingViewService.headChoice = 10;
+                savedPreferences.put(SavedPreferences.ICON_NUMBER, 10);
                 h10.setBackgroundColor(Color.GRAY);
                 if(FloatingViewService.serviceAlive){
                     FloatingViewService.getInstance().changeBubbleHead();
                 }
             }
         });
-
-
-
     }
 }

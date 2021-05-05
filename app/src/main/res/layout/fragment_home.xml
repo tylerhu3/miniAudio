@@ -157,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginRight="0dp"
-        android:text="Dark Theme" />
+        android:text="Light Theme" />
 
     </RelativeLayout>
 </FrameLayout>
