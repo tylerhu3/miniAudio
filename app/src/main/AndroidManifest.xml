@@ -4,12 +4,13 @@
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_android_circle"
+        android:icon="@drawable/ic_android_circle3"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_android_circle"
+        android:roundIcon="@drawable/ic_android_circle3"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
