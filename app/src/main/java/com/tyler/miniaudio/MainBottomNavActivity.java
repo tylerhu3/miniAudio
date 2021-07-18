@@ -31,7 +31,6 @@ public class MainBottomNavActivity extends AppCompatActivity {
     public static MusicIntentReceiver myReceiver;
     public static String TAG="Background Audio Player";
 
-
     ///This is for headphone disconnect
     private class MusicIntentReceiver extends BroadcastReceiver {
         @Override
@@ -60,7 +59,6 @@ public class MainBottomNavActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;

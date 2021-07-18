@@ -33,7 +33,6 @@ public class MusicPlayer extends Activity {
     }
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -309,19 +308,9 @@ public class MusicPlayer extends Activity {
         myHandler.postDelayed(runnable, 1000);
     }
 
-
-
-
-
-
     public void moveSeekBarWhilePlayingMusic(){
         seekBarProgression = new SeekBarTracker();
         seekBarProgression.start();
     }
-
-
-
-
-
 
 }

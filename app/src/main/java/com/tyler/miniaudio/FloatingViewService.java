@@ -60,8 +60,6 @@ public class FloatingViewService extends Service {
 
     public  Context mContext;
     public RecyclerView recyclerView;
-//    MusicPlayer mPlayer;
-    //Mediaplayer image configuration
     public SeekBar seekBar, volumeBar;
 
     public ImageView playButton, nextButton,  prevButton, albumart, minimizeButton, maximizeButton, closeButton,
@@ -73,8 +71,6 @@ public class FloatingViewService extends Service {
     //from play to pause, Im using the variables
     int savedPlayDrawableID, savedPausedDrawableID;
     int seekBarColor = Color.RED;
-
-
 
     @Override
     public void onCreate() {
@@ -419,7 +415,7 @@ public class FloatingViewService extends Service {
                     .setContentIntent(pi).build();
             startForeground(1337, notification);
 
-        } else {
+        } else if (Build.VERSION.SDK_INT < 26 && Build.VERSION.SDK_INT >= 21) {
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.noticon2)
                     .setContentTitle("Background Music Player")
@@ -429,7 +425,17 @@ public class FloatingViewService extends Service {
                     .addAction(R.drawable.ic_chevron_left_black_24dp, "Prev",prevIntent)
                     .setContentIntent(pi).build();
             //The ID needs to be unique, right now it's 1337
-            startForeground(1337, notification);
+            startForeground(1334, notification);
+        }else{
+            notification = new NotificationCompat.Builder(this)
+                    .setContentTitle("Background Music Player")
+                    .setContentText("")
+                    .addAction(R.drawable.ic_last_page_black_24dp, "Play/Pause", playPauseIntent)
+                    .addAction(R.drawable.ic_chevron_right_black_24dp, "Next",nextIntent)
+                    .addAction(R.drawable.ic_chevron_left_black_24dp, "Prev",prevIntent)
+                    .setContentIntent(pi).build();
+            //The ID needs to be unique, right now it's 1337
+            startForeground(1334, notification);
         }
     }
 
@@ -453,9 +459,6 @@ public class FloatingViewService extends Service {
         stopSelf();
     }
 
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -464,9 +467,6 @@ public class FloatingViewService extends Service {
         serviceAlive = false;
         if (mParentView != null) mWindowManager.removeView(mParentView);
     }
-
-
-
 
     public void setupView(){
         //The below is to prevent Android above 7.0 crash
