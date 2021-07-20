@@ -11,11 +11,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,6 +37,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import static android.view.View.VISIBLE;
 /*
 *
@@ -54,10 +60,11 @@ public class FloatingViewService extends Service {
     public  ViewGroup mParentView;
     static FloatingViewService mfloatViewService;
     public Notification notification;
-    public SongAdapter songAdapter;
     //Context of this service:
     SavedPreferences savedPreferences;
-
+    public static ArrayList<SongInfo> _songs;
+    public static SongAdapter songAdapter;
+    
     public  Context mContext;
     public RecyclerView recyclerView;
     public SeekBar seekBar, volumeBar;
@@ -72,13 +79,56 @@ public class FloatingViewService extends Service {
     int savedPlayDrawableID, savedPausedDrawableID;
     int seekBarColor = Color.RED;
 
+    ////////// Load ALL audio from Storage
+    private void loadSongs(){
+
+        Context applicationContext = MainBottomNavActivity.contextOfApplication;
+        applicationContext.getContentResolver();
+        _songs = new ArrayList<>();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        // Grab music from internal storage:
+//        Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0";
+        Cursor cursor = applicationContext.getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    SongInfo s = new SongInfo(name, artist, url);
+                    try {
+                        _songs.add(s);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(MainBottomNavActivity.mContext, "Load song error", Toast.LENGTH_SHORT).show();
+
+                    }
+                } while (cursor.moveToNext());
+            }
+//            Toast.makeText(MainBottomNavActivity.mContext, "Size of _songs" + _songs.size(), Toast.LENGTH_SHORT).show();
+            cursor.close();
+            songAdapter = new SongAdapter(MainBottomNavActivity.mContext, _songs);
+            songAdapter.setOnItemClickListener(new SongAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Context context,/*final Button b,*/ View view, final SongInfo obj, final int position) {
+                    MusicPlayer.musicPlayerSongChange(position);
+//                view.setBackgroundColor(Color.MAGENTA);
+//                String songName = obj.getArtistname() + " - " + obj.getSongname();
+//                songText.setText(songName);
+                }
+            });
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         serviceAlive = true;
         mfloatViewService = this;
         mContext = this;
-        savedPreferences =  SavedPreferences.getInstance();
+        savedPreferences = SavedPreferences.getInstance();
+        loadSongs();
         setupView();
         setUpMediaPlayerViews();
         themeSetter();
@@ -126,7 +176,7 @@ public class FloatingViewService extends Service {
                 linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(MainBottomNavActivity.songAdapter);
+        recyclerView.setAdapter(songAdapter);
     }
 
     @SuppressLint("ClickableViewAccessibility")

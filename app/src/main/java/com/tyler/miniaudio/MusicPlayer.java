@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 
 import java.util.Random;
@@ -28,7 +29,7 @@ public class MusicPlayer extends Activity {
     public static MusicPlayer musicPlayer;
     public static Context context;
 
-    public static boolean isMediaPlayerAlive(){
+    public static boolean isMediaPlayerAlive() {
         return (mediaPlayer != null);
     }
 
@@ -37,11 +38,11 @@ public class MusicPlayer extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Log.d(MainBottomNavActivity.TAG, "mmm" +context);
+        Log.d(MainBottomNavActivity.TAG, "mmm" + context);
     }
 
 
-    public MusicPlayer(){
+    public MusicPlayer() {
         setUpMediaPlayer();
     }
 
@@ -56,8 +57,8 @@ public class MusicPlayer extends Activity {
         }
     }
 
-    public static void stopMusic(){
-        if(mediaPlayer == null)
+    public static void stopMusic() {
+        if (mediaPlayer == null)
             return;
         mediaPlayer.stop();
         mediaPlayer.reset();
@@ -69,31 +70,28 @@ public class MusicPlayer extends Activity {
         return musicPlayer;
     }
 
-    public void setUpMediaPlayer(){
+    public void setUpMediaPlayer() {
         moveSeekBarWhilePlayingMusic();
     }
 
     //////////// Function for changing songs
-    public static void nextSong (){
+    public static void nextSong() {
 
         if (FloatingViewService.serviceAlive)
             FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
-        if (currentSong + 1 !=  MainBottomNavActivity._songs.size()) { //We are not final track
+        if (currentSong + 1 != FloatingViewService._songs.size()) { //We are not final track
 //                                Log.d(MainBottomNavActivity.TAG, "Next Song");
-
-            if(shuffleOn == 0) {
+            if (shuffleOn == 0) {
                 ++currentSong;
-            }
-            else if (shuffleOn == 1) {
-                currentSong = randomNumberGenerator.nextInt( MainBottomNavActivity._songs.size());
+            } else if (shuffleOn == 1) {
+                currentSong = randomNumberGenerator.nextInt(FloatingViewService._songs.size());
             }
             //if shuffle == 3, we just leave the currentSong alone
         } else { //We are on final track
             if (shuffleOn == 1) {
-                currentSong = randomNumberGenerator.nextInt( MainBottomNavActivity._songs.size());
-            }
-            else if (shuffleOn == 0){
+                currentSong = randomNumberGenerator.nextInt(FloatingViewService._songs.size());
+            } else if (shuffleOn == 0) {
                 currentSong = 0;
                 return; // stop playing since we got to the last track
             }
@@ -103,68 +101,59 @@ public class MusicPlayer extends Activity {
         musicPlayerSongChange(currentSong);
     }
 
-    public static void prevSong (){
+    public static void prevSong() {
         if (FloatingViewService.serviceAlive)
             FloatingViewService.getInstance().playButton.setImageResource(FloatingViewService.getInstance().savedPausedDrawableID);
 
-        if (currentSong  !=  0) { //We are not final track
+        if (currentSong != 0) { //We are not final track
 //                                Log.d(MainBottomNavActivity.TAG, "Next Song");
-            if(shuffleOn == 0) {
+            if (shuffleOn == 0) {
                 --currentSong;
-            }
-            else if (shuffleOn == 1) {
-                currentSong = randomNumberGenerator.nextInt( MainBottomNavActivity._songs.size());
+            } else if (shuffleOn == 1) {
+                currentSong = randomNumberGenerator.nextInt(FloatingViewService._songs.size());
             }
             //if shuffle == 3, we just leave the currentSong alone
         } else { //We are on final track
             if (shuffleOn == 1) {
-                currentSong = randomNumberGenerator.nextInt( MainBottomNavActivity._songs.size());
-            }
-            else{
+                currentSong = randomNumberGenerator.nextInt(FloatingViewService._songs.size());
+            } else {
                 currentSong = 0;
                 return; // stop playing since we got to the last track
             }
         }
-
-        musicPlayerSongChange(currentSong );
+        musicPlayerSongChange(currentSong);
     }
 
-    public static boolean isPlaying(){
+    public static boolean isPlaying() {
         return mediaPlayer.isPlaying();
     }
 
-
-    public static void playPause(){
+    public static void playPause() {
         Log.d(MainBottomNavActivity.TAG, "playPause Start");
-        if(mediaPlayer != null)
-        {
+        if (mediaPlayer != null) {
             Log.d(MainBottomNavActivity.TAG, "playPause not null");
-            if(mediaPlayer.isPlaying())
-            {
+            if (mediaPlayer.isPlaying()) {
 
                 Log.d(MainBottomNavActivity.TAG, "playPause pausing");
                 mediaPlayer.pause();
-                if(FloatingViewService.serviceAlive){
+                if (FloatingViewService.serviceAlive) {
                     FloatingViewService.getInstance().playButton.setImageResource(
                             FloatingViewService.getInstance().savedPlayDrawableID);
                 }
-            }
-
-            else{
+            } else {
 
 
                 Log.d(MainBottomNavActivity.TAG, "playPause playing");
                 mediaPlayer.start();
-                if(FloatingViewService.serviceAlive){
+                if (FloatingViewService.serviceAlive) {
                     FloatingViewService.getInstance().playButton.setImageResource(
                             FloatingViewService.getInstance().savedPausedDrawableID);
 
                 }
             }
-        }
-        else{
+        } else {
             musicPlayerSongChange(currentSong);
-            if(FloatingViewService.serviceAlive){
+            if (FloatingViewService.serviceAlive) {
 
                 FloatingViewService.getInstance().playButton.setImageResource(
                         FloatingViewService.getInstance().savedPausedDrawableID);
@@ -174,7 +163,7 @@ public class MusicPlayer extends Activity {
 
     }
 
-    public static void shuffleSongs(){
+    public static void shuffleSongs() {
         SavedPreferences savedPreferences = SavedPreferences.getInstance();
         Boolean lightModeOn = savedPreferences.get(SavedPreferences.LIGHT_MODE, true);
         if (shuffleOn == 0) {
@@ -182,8 +171,7 @@ public class MusicPlayer extends Activity {
             if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_one_black_24dp);
-            }
-            else{
+            } else {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
 
@@ -192,13 +180,12 @@ public class MusicPlayer extends Activity {
             Toast.makeText(MainBottomNavActivity.mContext, "Repeat Mode", Toast.LENGTH_SHORT).show();
 
             shuffleOn = 2;
-        } else if (shuffleOn == 2){
+        } else if (shuffleOn == 2) {
 
             if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_shuffle_black_24dp);
-            }
-            else{
+            } else {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_shuffle_white_24dp);
 
@@ -206,14 +193,12 @@ public class MusicPlayer extends Activity {
 
             Toast.makeText(MainBottomNavActivity.mContext, "Shuffle Mode", Toast.LENGTH_SHORT).show();
             shuffleOn = 1;
-        }
-        else{
+        } else {
 
             if (lightModeOn) {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_black_24dp);
-            }
-            else{
+            } else {
                 if (FloatingViewService.serviceAlive)
                     FloatingViewService.getInstance().shuffleButton.setImageResource(R.drawable.ic_repeat_white_24dp);
 
@@ -224,30 +209,30 @@ public class MusicPlayer extends Activity {
         }
     }
 
-    public static void setVolume(float newVolume){
+    public static void setVolume(float newVolume) {
         volume = newVolume;
-        if(mediaPlayer != null)
-        mediaPlayer.setVolume(newVolume, newVolume);
+        if (mediaPlayer != null)
+            mediaPlayer.setVolume(newVolume, newVolume);
     }
 
-    public static int getProgress(){
-        if(mediaPlayer == null)
+    public static int getProgress() {
+        if (mediaPlayer == null)
             return 0;
         return mediaPlayer.getCurrentPosition();
     }
 
-    public static void setMediaPlayerProgress(int progress){
-        if(mediaPlayer != null)
+    public static void setMediaPlayerProgress(int progress) {
+        if (mediaPlayer != null)
             mediaPlayer.seekTo(progress);
     }
 
     /*
-    * musicPlayerSongChange takes a int and creates a new mediaplayer playing that song
-    * */
+     * musicPlayerSongChange takes a int and creates a new mediaplayer playing that song
+     * */
     public static void musicPlayerSongChange(int position) {
 
         currentSong = position;
-        if (currentSong >=  MainBottomNavActivity._songs.size()) {
+        if (currentSong >= FloatingViewService._songs.size()) {
             currentSong = 0;
             return;
         }
@@ -265,14 +250,13 @@ public class MusicPlayer extends Activity {
 
                     mediaPlayer = new MediaPlayer();
                     mediaPlayer.setVolume(volume, volume);
-                    mediaPlayer.setDataSource( MainBottomNavActivity._songs.get(currentSong).getSongUrl());
+                    mediaPlayer.setDataSource(FloatingViewService._songs.get(currentSong).getSongUrl());
                     mediaPlayer.prepareAsync();
                     mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
 
-                            if (FloatingViewService.serviceAlive)
-                            {
+                            if (FloatingViewService.serviceAlive) {
                                 FloatingViewService.getInstance().playButton.setImageResource(
                                         FloatingViewService.getInstance().savedPausedDrawableID);
                                 FloatingViewService.getInstance().seekBar.setProgress(0);
@@ -289,7 +273,7 @@ public class MusicPlayer extends Activity {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
 
-                           nextSong();
+                            nextSong();
                         }
                     });
                 } catch (Exception e) {
@@ -308,7 +292,7 @@ public class MusicPlayer extends Activity {
         myHandler.postDelayed(runnable, 1000);
     }
 
-    public void moveSeekBarWhilePlayingMusic(){
+    public void moveSeekBarWhilePlayingMusic() {
         seekBarProgression = new SeekBarTracker();
         seekBarProgression.start();
     }

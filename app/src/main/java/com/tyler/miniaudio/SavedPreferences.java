@@ -13,6 +13,7 @@ public class SavedPreferences {
     public static String SNAP_TO_GRIP = "snap_to_grid";
     public static String ICON_NUMBER = "icon";
     public static String LIGHT_MODE = "light_mode";
+    public static String PERMISION_TO_STORAGE = "Permission_To_Storage";
     // static variable single_instance of type Singleton
     private static SavedPreferences single_instance = null;
     private Context mainContext;
