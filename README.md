@@ -8,8 +8,8 @@ Summary: Simple music app inspired by facebook chatheads. This utilizes a Window
 
 Features:  
 -Small and Lightweight  
--Plays in the background of all other apps(Other apps cannot silence it) 
--Minimizes to background or chatHead 
+-Plays in the background of all other apps(Other apps cannot silence it)  
+-Minimizes to background or chatHead  
 -Volume is adjusted independently of device  
 
 Apk Link: https://www.dropbox.com/s/qmx8scuwmkqa4la/MiniAudio.apk?dl=0
