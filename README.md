@@ -1,5 +1,7 @@
 <h2>Mini Audio</h2>
 
+## Deprecated, worked on in Android 9
+
 Play Store Link: https://play.google.com/store/apps/details?id=com.tyler.miniaudio
 
 Summary: Simple music app inspired by facebook chatheads. This utilizes a WindowsLayoutManager to make the music head still in focus on top of other apps, a recyclerview to show the music list, and some notification specific things to keep it in focus. Other than that, it's literally a very simple app that just plays music in the background of all other apps.
